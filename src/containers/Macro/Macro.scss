@@ -1,0 +1,75 @@
+@import "../../styles/common.scss";
+
+.macro-header-container {
+    z-index         : 99;
+    display         : flex;
+    justify-content : space-between;
+    background-color: white;
+    color           : $common-text-color;
+    height          : 40px;
+    position        : relative;
+
+    .btn-logout {
+        color      : $common-text-color;
+        line-height: 40px;
+        height     : 40px;
+        padding    : 0 10px;
+
+        &:hover {
+            background-color: darken($colormain, 5);
+        }
+
+        i {
+            font-size: $base-size + 1px;
+        }
+    }
+}
+
+.macro-container {
+    display        : flex;
+    flex-direction : row;
+    margin-top     : 20px;
+    height         : 400px;
+    justify-content: center;
+
+    .chart-macro-container {
+        width        : 70%;
+       
+        border       : 0.1px solid #e1e1e1;
+        border-radius: 0.7%;
+        .chart-macro{
+            height: 90%;
+        }
+        .chart-macro-header{
+            display: flex;
+            height: 10%;
+            justify-content: space-between;
+            padding-left: 10px;
+            padding-right: 10px;
+            .select-time-scale {
+                width: 100px;
+                height: 100%;
+                margin-top: 5px;
+            }
+            .expand-modal-chart {
+                display: flex;
+                align-items: flex-end;
+                i{
+                    font-size: 24px;
+                    border: 3px solid whitesmoke;
+                    color: dimgray;
+                }
+            }
+        }
+    }
+
+
+    .item-chart-macro {
+        width        : 15%;
+        border       : 0.1px solid #e1e1e1;
+        border-radius: 0.7%;
+        overflow: auto;
+        //border: 1px solid green;
+
+    }
+}

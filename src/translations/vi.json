@@ -1,0 +1,16 @@
+{
+    "header": {
+        "general": "Tổng quan",
+        "macro": "Vĩ mô",
+        "gdp-title":"SẢN LƯỢNG",
+        "gdp": {
+            "gdp-year": "GDP Năm",
+            "gdp-hien-hanh": "GDP hiện hành"
+        },
+        "cpi-title":"cpi",
+        "cpi": {
+            "cpi-year": "cpi Year",
+            "cpi-hien-hanh": "cpi Now"
+        }
+    }
+}

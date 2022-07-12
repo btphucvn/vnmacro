@@ -1,0 +1,115 @@
+.stock-macro-container {
+    display          : flex;
+    flex-direction   : column;
+    gap              : 40px;
+    // border        : 1px solid red;
+    margin-top       : 30px;
+    align-items      : center;
+
+    .select-index {
+
+        position: relative;
+        z-index : 1000000;
+        width   : 90%;
+
+        //@function        : 1px solid green;
+        .select {
+            width: 30%;
+        }
+    }
+
+    .ratio-container {
+        display   : flex;
+        column-gap: 2%;
+        width     : 90%;
+
+        .pe-span,
+        .pb-span {
+            border-left: 4px solid #5a4a69;
+            padding    : 0.25rem;
+            font-size  : 1rem;
+            font-weight: 700;
+        }
+    }
+
+    .plan-and-leverage-container {
+        width  : 90%;
+        display: flex;
+
+        .plan-profit-container {
+           // border        : 1px solid purple;
+            display       : flex;
+            flex-direction: column;
+            width         : 50%;
+            gap           : 10px;
+            .table-plan-profit{
+                table{
+                    td{
+                        height: 50px;
+                    }
+  
+                }
+            }
+            .title-plan {
+                border-left: 4px solid #5a4a69;
+                padding    : 0.25rem;
+                font-size  : 1rem;
+                font-weight: 700;
+            }
+
+            .plan-profit {
+                display        : flex;
+                justify-content: space-between;
+
+                .table-plan-profit {
+                    width: 70%;
+                }
+
+                .progress-plan-profit {
+                    display        : flex;
+                    justify-content: center;
+                     width          : 30%;
+
+                    .progress-container {
+                        display       : flex;
+                        flex-direction: column;
+                        align-items: center;
+                        .progress-bar-vertical {
+                            width       : 100px;
+                            height      : 100%;
+                            display     : flex;
+                            align-items : flex-end;
+                            margin-right: 20px;
+                            float       : left;
+                            
+                        }
+
+
+                        .progress-bar-vertical .progress-bar {
+                            width             : 100%;
+                            height            : 0;
+                            -webkit-transition: height 0.6s ease;
+                            -o-transition     : height 0.6s ease;
+                            transition        : height 0.6s ease;
+
+                        }
+                    }
+
+                    .title-progress {
+                        font-style: oblique;
+                        color     : #706c6c;
+                        text-align: center;
+                    }
+                }
+            }
+
+        }
+
+        .leverage-container {
+            width : 50%;
+            //border: 1px solid darkgoldenrod;
+
+        }
+    }
+
+}

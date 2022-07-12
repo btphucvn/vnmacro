@@ -1,0 +1,16 @@
+{
+    "header": {
+        "general": "Tổng quan",
+        "macro": "Vĩ mô",
+        "gdp-title":"GDP",
+        "gdp": {
+            "gdp-year": "GDP Year",
+            "gdp-hien-hanh": "GDP Now"
+        },
+        "cpi-title":"cpi",
+        "cpi": {
+            "cpi-year": "cpi Year",
+            "cpi-hien-hanh": "cpi Now"
+        }
+    }
+}
