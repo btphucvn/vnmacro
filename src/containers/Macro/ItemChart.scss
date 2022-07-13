@@ -1,0 +1,27 @@
+.item-chart-macro {
+    .chart-item {
+        font-weight: 600;
+        color      : #cfcbcb;
+        font-size  : 40px;
+
+
+    }
+    .content-item {
+        display: flex;
+        flex-flow: row;
+        gap: 5px;
+    }
+}
+
+input[type="color"] {
+    appearance: none;
+    border: 1px solid #dddddd;
+    padding: 0;
+    height: 35px;
+    width: 17px;
+    border-radius: 5%;
+}
+
+::-webkit-color-swatch {
+    border: none;
+}

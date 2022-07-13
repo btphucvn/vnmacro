@@ -15,20 +15,27 @@ export const adminMenu = [
     //     // ]
     // },
 
-    { 
+    {
         //hệ thống
         name: 'header.gdp-title', menus: [
             {
-                name: 'header.gdp.gdp-year', link: path.MACRO+path.GDPYear
+                name: 'header.gdp.gdp-year', link: "/vi-mo/san-luong/gdp-viet-nam-theo-nam"
             },
             {
-                name: 'header.gdp.gdp-hien-hanh', link: '/gdp-hien-hanh'
+                name: 'header.gdp.gdp-compare', link: '/vi-mo/san-luong/gdp-viet-nam-so-sanh'
+            },
+            {
+                name: 'header.gdp.gdp-current', link: '/vi-mo/san-luong/gdp-viet-nam-hien-hanh'
+            },
+
+            {
+                name: 'header.gdp.pmi', link: '/vi-mo/san-luong/chi-so-pmi-viet-nam'
             },
             // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
         ]
-        ,linkGroup:path.GDPYear
+        // , linkGroup: path.GDP
     },
-    { 
+    {
         //hệ thống
         name: 'header.cpi-title', menus: [
             {
@@ -39,6 +46,6 @@ export const adminMenu = [
             },
             // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
         ]
-        ,linkGroup:"/cpiaaa"
+        , linkGroup: "/cpiaaa"
     },
 ];

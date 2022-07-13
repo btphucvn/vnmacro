@@ -15,7 +15,6 @@ import StockMacro from '../containers/StockMacro/StockMacro';
 
 import Header from './Header/Header';
 import Macro from './Macro/Macro';
-import GDPYear from './Macro/GDP/GDPYear';
 class App extends Component {
 
     handlePersistorState = () => {

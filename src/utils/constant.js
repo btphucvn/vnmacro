@@ -3,8 +3,8 @@ export const path = {
     LOGIN: '/login',
     LOG_OUT: '/logout',
     SYSTEM: '/system',
-    GDPYear:'/gdp-viet-nam-theo-nam',
-    MACRO:'/vi-mo',
+    GDP: '/gdp-viet-nam-theo-nam',
+    MACRO: '/vi-mo',
 
 };
 
@@ -12,7 +12,7 @@ export const languages = {
     VI: 'vi',
     EN: 'en'
 };
- 
+
 export const manageActions = {
     ADD: "ADD",
     EDIT: "EDIT",

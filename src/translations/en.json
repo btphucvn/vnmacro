@@ -5,7 +5,9 @@
         "gdp-title":"GDP",
         "gdp": {
             "gdp-year": "GDP Year",
-            "gdp-hien-hanh": "GDP Now"
+            "gdp-compare":"GDP so sánh",
+            "gdp-current":"GDP hiện hành",
+            "gdp-pmi": "PMI"
         },
         "cpi-title":"cpi",
         "cpi": {

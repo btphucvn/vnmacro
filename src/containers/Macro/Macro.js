@@ -5,12 +5,11 @@ import { adminMenu } from '../Header/menuApp';
 import ChartMacro from './ChartMacro';
 import "./Macro.scss";
 import { Route, Switch } from 'react-router-dom';
-import GDPYear from './GDP/GDPYear';
-import { ConnectedRouter as Router } from 'connected-react-router';
-import { history } from '../../redux'
-import { path } from '../../utils'
+
 import Select from 'react-select'
 import ItemChart from './ItemChart';
+import MacroData from './MacroData';
+import TableDataMacro from './TableDataMacro';
 const options = [
     { value: 'ALL', label: 'ALL' },
     { value: '3M', label: '3M' },
@@ -22,7 +21,7 @@ const options = [
 ]
 const customStyles = {
 
-  };
+};
 class Macro extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +48,7 @@ class Macro extends Component {
                     <div className="chart-macro-container">
                         <div className="chart-macro-header">
                             <div className="select-time-scale">
-                                <Select options={options} defaultValue={{ value: 'ALL', label: 'ALL' }}  />
+                                <Select options={options} defaultValue={{ value: 'ALL', label: 'ALL' }} />
                             </div>
                             <div className='expand-modal-chart'>
                                 <i class="fas fa-expand-arrows-alt"></i>
@@ -62,13 +61,13 @@ class Macro extends Component {
                     </div>
 
                     <div className="item-chart-macro">
-                            <ItemChart/>
+                        <ItemChart />
                     </div>
                 </div>
                 <Switch>
-                    <Route path={path.MACRO + path.GDPYear} component={(GDPYear)} />
-
+                    <Route path="/vi-mo/san-luong" component={(MacroData)} />
                 </Switch>
+
             </Fragment>
         );
     }
