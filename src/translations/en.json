@@ -2,17 +2,17 @@
     "header": {
         "general": "Tổng quan",
         "macro": "Vĩ mô",
-        "gdp-title":"GDP",
+        "gdp-title": "Sản lượng",
         "gdp": {
-            "gdp-year": "GDP Year",
-            "gdp-compare":"GDP so sánh",
-            "gdp-current":"GDP hiện hành",
+            "gdp-year": "GDP (Năm)",
+            "gdp-compare": "GDP so sánh",
+            "gdp-current": "GDP hiện hành",
             "gdp-pmi": "PMI"
         },
-        "cpi-title":"cpi",
-        "cpi": {
-            "cpi-year": "cpi Year",
-            "cpi-hien-hanh": "cpi Now"
+        "consumption-title": "cpi",
+        "consumption": {
+            "cpi": "CPI",
+            "retail": "Bán lẻ HH&DV"
         }
     }
 }

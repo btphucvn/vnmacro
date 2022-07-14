@@ -27,25 +27,20 @@ export const adminMenu = [
             {
                 name: 'header.gdp.gdp-current', link: '/vi-mo/san-luong/gdp-viet-nam-hien-hanh'
             },
-
             {
-                name: 'header.gdp.pmi', link: '/vi-mo/san-luong/chi-so-pmi-viet-nam'
+                name: 'header.gdp.gdp-pmi', link: "/vi-mo/san-luong/chi-so-pmi-viet-nam"
             },
-            // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
         ]
-        // , linkGroup: path.GDP
     },
     {
         //hệ thống
-        name: 'header.cpi-title', menus: [
+        name: 'header.consumption-title', menus: [
             {
-                name: 'header.cpi.cpi-year', link: '/cpi-year'
+                name: 'header.consumption.cpi', link: '/vi-mo/tieu-dung/chi-so-cpi-viet-nam'
             },
             {
-                name: 'header.cpi.cpi-hien-hanh', link: '/cpi-hien-hanh'
+                name: 'header.consumption.retail', link: '/vi-mo/tieu-dung/ban-le-hang-hoa-va-dich-vu'
             },
-            // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
         ]
-        , linkGroup: "/cpiaaa"
     },
 ];

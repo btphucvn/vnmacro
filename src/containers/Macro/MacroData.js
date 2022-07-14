@@ -4,6 +4,8 @@ import './MacroData.scss'
 import { getAllQuantities } from '../../services/QuantitiesService'
 import { Link, useParams } from 'react-router-dom';
 import TableDataMacro from './TableDataMacro';
+import { Route, Switch } from 'react-router-dom';
+import { getMacroTypeByMacroKeyID } from '../../services/MacroTypeService'
 
 
 class MacroData extends Component {
@@ -13,32 +15,76 @@ class MacroData extends Component {
         this.state = {
             dataNav: null,
             selected: -1,
-            keySelected:"",
+            keySelected: "",
+            keyID: "",
+        }
+
+    }
+    async componentWillReceiveProps(props) {
+        if (props.match.params.macroKeyID == this.props.match.params.macroKeyID) {
+            const dataNav = this.state.dataNav;
+            console.log(props)
+            if (dataNav && dataNav.length > 0) {
+                dataNav.map((item, index) => {
+                    if (item.keyID == props.match.params.keyID) {
+                        this.setState({
+                            selected: index
+                        })
+                    }
+                })
+            }
+        }
+        else {
+            const data = await getMacroTypeByMacroKeyID(props.match.params.macroKeyID);
+            const dataNav = data.data;
+            if (data.errCode == 0 && data.data.length > 0) {
+                this.setState({
+                    dataNav: dataNav,
+                    keySelected: dataNav[0].keyID,
+                })
+            }
+            if (dataNav && dataNav.length > 0) {
+                dataNav.map((item, index) => {
+                    if (item.keyID == this.props.match.params.keyID) {
+                        this.setState({
+                            selected: index
+                        })
+                    }
+                })
+            }
         }
 
     }
     async componentDidMount() {
-        const data = await getAllQuantities();
+        const data = await getMacroTypeByMacroKeyID(this.props.match.params.macroKeyID);
+        const dataNav = data.data;
         if (data.errCode == 0 && data.data.length > 0) {
-            const dataNav = data.data.reverse();
             this.setState({
                 dataNav: dataNav,
-                selected:0,
-                keySelected:dataNav[0].keyQuantity,
+                keySelected: dataNav[0].keyID,
+            })
+        }
+        if (dataNav && dataNav.length > 0) {
+            dataNav.map((item, index) => {
+                if (item.keyID == this.props.match.params.keyID) {
+                    this.setState({
+                        selected: index
+                    })
+                }
             })
         }
     }
-     handleOnClickNav = async (item,index) => {
+    handleOnClickNav = async (item, index) => {
 
         await this.setState({
-            selected:index,
-            keySelected:item.keyQuantity,
+            selected: index,
+            keySelected: item.keyID,
         })
 
     }
     render() {
         let arrDataNav = this.state.dataNav;
-        console.log(this.state)
+        //console.log(this.state)
         return (
             <Fragment>
                 <div className="macro-nav-container">
@@ -47,18 +93,18 @@ class MacroData extends Component {
                             {
                                 arrDataNav && arrDataNav.length > 0 && arrDataNav.map((item, index) => {
                                     if (index === this.state.selected) {
-                                        
+
                                         return (
                                             <li>
-                                                <Link className='active' to={"/vi-mo/san-luong/" + item.keyQuantity} onClick={() => this.handleOnClickNav(item,index)}>{item.title}</Link>
+                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.macroKeyID + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }
                                     else {
-                                        
+
                                         return (
                                             <li>
-                                                <Link to={"/vi-mo/san-luong/" + item.keyQuantity} onClick={() => this.handleOnClickNav(item,index)}>{item.title}</Link>
+                                                <Link to={"/vi-mo/" + this.props.match.params.macroKeyID + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }
@@ -68,7 +114,7 @@ class MacroData extends Component {
                         </ul>
                     </div>
                     <div className='table-data'>
-                        <TableDataMacro keyLink={this.state.keySelected}/>
+                        <Route path={"/vi-mo/" + this.props.match.params.macroKeyID +"/:keyID"} component={TableDataMacro} />
                     </div>
                 </div>
             </Fragment>

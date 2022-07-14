@@ -9,19 +9,24 @@ class TableDataMacro extends Component {
 
     constructor(props) {
         super(props);
-        //console.log(props);
         this.state={
-            keyLink:"",
+            keyID:"",
         }
 
     }
-     componentDidMount() {
+    componentWillReceiveProps(props)
+    {
+        this.setState({
+            keyID: props.match.params.keyID
+        })
+    }
+    componentDidMount() {
 
     }
     render() {
         return (
             <Fragment>
-                aaaaa
+                {this.state.keyID}
             </Fragment>
         );
     }
