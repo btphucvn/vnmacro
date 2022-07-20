@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
-import './MacroData.scss'
-import { getAllQuantities } from '../../services/QuantitiesService'
 import { Link, useParams } from 'react-router-dom';
-import TableDataMacro from './TableDataMacro';
-import { Route, Switch } from 'react-router-dom';
 import { getMacroTypeByKeyIDMacro } from '../../services/MacroTypeService'
 
 
@@ -93,7 +89,6 @@ class MacroData extends Component {
         //console.log(this.state)
         return (
             <Fragment>
-                <div className="macro-nav-container">
                     <div className='title-container'>
                         <ul>
                             {
@@ -119,13 +114,8 @@ class MacroData extends Component {
                             }
                         </ul>
                     </div>
-                    <div className='table-data'>
-                        {/* <Route exact path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} idMacro={this.state.idMacro} component={TableDataMacro} /> */}
-                        {/* <Route exact path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} element={<TableDataMacro idMacro={this.state.idMacro}/>} /> */}
-                        <Route path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} render={(props) => <TableDataMacro idMacro={this.state.idMacro} {...props}/>}/>
 
-                    </div>
-                </div>
+                
             </Fragment>
         );
     }

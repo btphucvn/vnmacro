@@ -32,7 +32,7 @@ class Macro extends Component {
 
 
     componentDidMount() {
-
+        //console.log(this.props);
     }
 
     render() {
@@ -64,11 +64,16 @@ class Macro extends Component {
                         <ItemChart />
                     </div>
                 </div>
-                <Switch>
-                    <Route path="/vi-mo/:keyIDMacro/:keyID" component={(MacroData)} />
-                </Switch>
+                <div className="macro-nav-container">
+                    <Switch>
+                        <Route path="/vi-mo/:keyIDMacro/:keyID" component={(MacroData)} />
 
-            </Fragment>
+                    </Switch>
+                    <div className='table-data'>
+                        <Route path="/vi-mo/:keyIDMacro/:keyID" component={(TableDataMacro)} />
+                    </div>
+                </div>
+            </Fragment >
         );
     }
 }
