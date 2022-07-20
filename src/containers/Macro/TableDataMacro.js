@@ -11,22 +11,25 @@ class TableDataMacro extends Component {
         super(props);
         this.state={
             keyID:"",
+            idMacro:-1,
         }
 
     }
     componentWillReceiveProps(props)
     {
+        console.log(this.props)
+
         this.setState({
-            keyID: props.match.params.keyID
+            keyID: props.match.params.keyID,
+            idMacro:props.idMacro
         })
     }
     componentDidMount() {
-
     }
     render() {
         return (
             <Fragment>
-                {this.state.keyID}
+                {this.state.keyID+" "+this.state.idMacro}
             </Fragment>
         );
     }

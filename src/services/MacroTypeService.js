@@ -2,11 +2,11 @@ import axios from "../axios"
 
 
 
-const getMacroTypeByMacroKeyID = (macroKeyID) => {
-    return axios.get(`/api/get-macro-type?macroKeyID=${macroKeyID}`);
+const getMacroTypeByKeyIDMacro = (keyIDMacro) => {
+    return axios.get(`/api/get-macro-type?keyIDMacro=${keyIDMacro}`);
 }
 
 export {
-    getMacroTypeByMacroKeyID,
+    getMacroTypeByKeyIDMacro,
 
 }

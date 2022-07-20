@@ -65,7 +65,7 @@ class Macro extends Component {
                     </div>
                 </div>
                 <Switch>
-                    <Route path="/vi-mo/:macroKeyID/:keyID" component={(MacroData)} />
+                    <Route path="/vi-mo/:keyIDMacro/:keyID" component={(MacroData)} />
                 </Switch>
 
             </Fragment>

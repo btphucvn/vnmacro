@@ -5,7 +5,7 @@ import { getAllQuantities } from '../../services/QuantitiesService'
 import { Link, useParams } from 'react-router-dom';
 import TableDataMacro from './TableDataMacro';
 import { Route, Switch } from 'react-router-dom';
-import { getMacroTypeByMacroKeyID } from '../../services/MacroTypeService'
+import { getMacroTypeByKeyIDMacro } from '../../services/MacroTypeService'
 
 
 class MacroData extends Component {
@@ -17,13 +17,14 @@ class MacroData extends Component {
             selected: -1,
             keySelected: "",
             keyID: "",
+            idMacro: -1,
         }
 
     }
     async componentWillReceiveProps(props) {
-        if (props.match.params.macroKeyID == this.props.match.params.macroKeyID) {
+        if (props.match.params.keyIDMacro == this.props.match.params.keyIDMacro) {
             const dataNav = this.state.dataNav;
-            console.log(props)
+            //console.log(props)
             if (dataNav && dataNav.length > 0) {
                 dataNav.map((item, index) => {
                     if (item.keyID == props.match.params.keyID) {
@@ -35,7 +36,7 @@ class MacroData extends Component {
             }
         }
         else {
-            const data = await getMacroTypeByMacroKeyID(props.match.params.macroKeyID);
+            const data = await getMacroTypeByKeyIDMacro(props.match.params.keyIDMacro);
             const dataNav = data.data;
             if (data.errCode == 0 && data.data.length > 0) {
                 this.setState({
@@ -47,7 +48,9 @@ class MacroData extends Component {
                 dataNav.map((item, index) => {
                     if (item.keyID == this.props.match.params.keyID) {
                         this.setState({
-                            selected: index
+                            selected: index,
+                            idMacro:item.id,
+
                         })
                     }
                 })
@@ -56,7 +59,7 @@ class MacroData extends Component {
 
     }
     async componentDidMount() {
-        const data = await getMacroTypeByMacroKeyID(this.props.match.params.macroKeyID);
+        const data = await getMacroTypeByKeyIDMacro(this.props.match.params.keyIDMacro);
         const dataNav = data.data;
         if (data.errCode == 0 && data.data.length > 0) {
             this.setState({
@@ -68,17 +71,20 @@ class MacroData extends Component {
             dataNav.map((item, index) => {
                 if (item.keyID == this.props.match.params.keyID) {
                     this.setState({
-                        selected: index
+                        selected: index,
+                        idMacro:item.id,
+
                     })
                 }
             })
         }
     }
     handleOnClickNav = async (item, index) => {
-
+        //console.log(item);
         await this.setState({
             selected: index,
             keySelected: item.keyID,
+            idMacro: item.id,
         })
 
     }
@@ -96,7 +102,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.macroKeyID + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.keyIDMacro + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }
@@ -104,7 +110,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link to={"/vi-mo/" + this.props.match.params.macroKeyID + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link to={"/vi-mo/" + this.props.match.params.keyIDMacro + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }
@@ -114,7 +120,10 @@ class MacroData extends Component {
                         </ul>
                     </div>
                     <div className='table-data'>
-                        <Route path={"/vi-mo/" + this.props.match.params.macroKeyID +"/:keyID"} component={TableDataMacro} />
+                        {/* <Route exact path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} idMacro={this.state.idMacro} component={TableDataMacro} /> */}
+                        {/* <Route exact path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} element={<TableDataMacro idMacro={this.state.idMacro}/>} /> */}
+                        <Route path={"/vi-mo/" + this.props.match.params.keyIDMacro + "/:keyID"} render={(props) => <TableDataMacro idMacro={this.state.idMacro} {...props}/>}/>
+
                     </div>
                 </div>
             </Fragment>
