@@ -41,13 +41,13 @@ class App extends Component {
                 <Router history={history}>
                     <Header />
                     <div className="main-container">
-                        <span className="content-container">
+                        <div className="content-container">
                             <Switch>
                                 <Route path={path.HOME} exact component={(StockMacro)} />
                                 <Route path={path.MACRO} component={(Macro)} />
 
                             </Switch>
-                        </span>
+                        </div>
                     </div>
                 </Router>
             </Fragment>

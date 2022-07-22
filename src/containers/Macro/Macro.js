@@ -73,6 +73,7 @@ class Macro extends Component {
                         <Route path="/vi-mo/:keyIDMacro/:keyID" component={(TableDataMacro)} />
                     </div>
                 </div>
+
             </Fragment >
         );
     }
