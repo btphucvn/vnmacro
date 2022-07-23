@@ -30988,7 +30988,6 @@ class TableDataMacro extends Component {
         return (
             <Fragment>
                 <table class="cell">
-                    <caption>Books I May or May Not Have Read</caption>
                     <thead>
                         <tr>
                             <th><span class="visually-hidden">Toggle</span></th>

@@ -13,6 +13,12 @@
         "consumption": {
             "cpi": "CPI",
             "retail": "Bán lẻ HH&DV"
+        },
+        "invest-title":"Đầu tư",
+        "invest":{
+            "business-registration":"Đăng Ký Kinh Doanh",
+            "social-development-investment-capital":"Vốn đầu tư phát triển xã hội",
+            "investment-from-government":"Vốn đầu tư từ ngân sách nhà nước"
         }
     }
 }

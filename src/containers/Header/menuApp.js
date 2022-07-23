@@ -43,4 +43,18 @@ export const adminMenu = [
             },
         ]
     },
+    {
+        //hệ thống
+        name: 'header.invest-title', menus: [
+            {
+                name: 'header.invest.business-registration', link: '/vi-mo/dau-tu/dang-ky-kinh-doanh'
+            },
+            {
+                name: 'header.invest.social-development-investment-capital', link: '/vi-mo/dau-tu/von-dau-tu-phat-trien-xa-hoi'
+            },
+            {
+                name: 'header.invest.investment-from-government', link: 'dau-tu/von-dau-tu-tu-nsnn'
+            },
+        ]
+    },
 ];

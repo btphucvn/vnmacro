@@ -56,6 +56,8 @@ class MacroData extends Component {
     }
     async componentDidMount() {
         const data = await getMacroTypeByKeyIDMacro(this.props.match.params.keyIDMacro);
+        console.log(data);
+
         const dataNav = data.data;
         if (data.errCode == 0 && data.data.length > 0) {
             this.setState({

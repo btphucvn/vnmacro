@@ -81,6 +81,7 @@
     flex-direction : row;
     justify-content: center;
     margin-top: 20px;
+    gap:10px;
     .title-container {
         width : 12%;
         height: 100%;
@@ -105,7 +106,7 @@
           }
           
           li a.active {
-            background-color: whitesmoke;
+            background-color: darken(whitesmoke, 10) !important;
             border-right: 4px solid $colormain;
           }
           
