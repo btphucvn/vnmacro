@@ -13,6 +13,20 @@
         "consumption": {
             "cpi": "CPI",
             "retail": "Bán lẻ HH&DV"
+        },
+        "invest-title":"Đầu tư",
+        "invest":{
+            "business-registration":"Đăng Ký Kinh Doanh",
+            "social-development-investment-capital":"Vốn đầu tư phát triển xã hội",
+            "investment-from-government":"Vốn đầu tư từ ngân sách nhà nước"
+        },
+        "manufacturing-title":"Đầu tư",
+        "manufacturing":{
+            "iip":"IIP",
+            "product":"Sản phẩm công nghiệp",
+            "price-carriage":"Chỉ số giá vận tải, kho bãi",
+            "price-input":"Chỉ số giá đầu vào sản xuất",
+            "ppi":"Chỉ số giá sản xuất PPI"
         }
     }
 }

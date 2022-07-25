@@ -53,7 +53,27 @@ export const adminMenu = [
                 name: 'header.invest.social-development-investment-capital', link: '/vi-mo/dau-tu/von-dau-tu-phat-trien-xa-hoi'
             },
             {
-                name: 'header.invest.investment-from-government', link: 'dau-tu/von-dau-tu-tu-nsnn'
+                name: 'header.invest.investment-from-government', link: '/vi-mo/dau-tu/von-dau-tu-tu-nsnn'
+            },
+        ]
+    },
+    {
+        //hệ thống
+        name: 'header.manufacturing-title', menus: [
+            {
+                name: 'header.manufacturing.iip', link: '/vi-mo/san-xuat/chi-so-ppi-viet-nam'
+            },
+            {
+                name: 'header.manufacturing.product', link: '/vi-mo/san-xuat/san-pham-cong-nghiep'
+            },
+            {
+                name: 'header.manufacturing.price-carriage', link: '/vi-mo/san-xuat/chi-so-van-tai-kho-bai'
+            },
+            {
+                name: 'header.manufacturing.price-input', link: '/vi-mo/san-xuat/chi-so-gia-dau-vao-san-xuat'
+            },
+            {
+                name: 'header.manufacturing.ppi', link: '/vi-mo/san-xuat/chi-so-ppi-viet-nam'
             },
         ]
     },
