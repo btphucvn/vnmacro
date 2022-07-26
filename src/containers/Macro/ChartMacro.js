@@ -72,27 +72,6 @@ class Macro extends Component {
             datasets: [
                 {
                     id: 1,
-                    type: 'bar',
-                    label: 'Dataset 2',
-                    backgroundColor: 'rgb(75, 192, 192)',
-                    data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-                    borderColor: 'white',
-                    borderWidth: 2,
-                    order:0,
-                    //yAxisID: 'y-axis-3',
-                    
-                },
-                {
-                    id: 1,
-                    type: 'bar',
-                    label: 'Dataset 3',
-                    backgroundColor: 'rgb(53, 162, 235)',
-                    data: labels.map(() => faker.datatype.number({ min: 500, max: 1000 })),
-                    order:0,
-                    //yAxisID: 'y-axis-2',
-                },
-                {
-                    id: 1,
                     type: 'line',
                     label: 'Dataset 1',
                     borderColor: 'rgb(255, 99, 132)',
@@ -137,7 +116,7 @@ class Macro extends Component {
 
                 {
                     (this.state.data &&
-                        <Chart ref='chart' type='bar' data={this.state.data} options={this.state.options} />
+                        <Chart ref='chart' type='line' data={this.state.data} options={this.state.options} />
                     )
                 }
 
