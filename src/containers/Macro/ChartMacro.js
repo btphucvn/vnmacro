@@ -114,11 +114,11 @@ class Macro extends Component {
         return (
             <Fragment>
 
-                {
+                {/* {
                     (this.state.data &&
                         <Chart ref='chart' type='line' data={this.state.data} options={this.state.options} />
                     )
-                }
+                } */}
 
             </Fragment>
         );
