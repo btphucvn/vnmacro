@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://14.225.192.11:3000",
+  "homepage": ".",
   "dependencies": {
     "@formatjs/intl-pluralrules": "^3.5.6",
     "@formatjs/intl-relativetimeformat": "^7.3.6",
