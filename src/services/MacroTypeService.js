@@ -2,11 +2,11 @@ import axios from "../axios"
 
 
 
-const getMacroTypeByKeyIDMacro = (keyIDMacro) => {
-    return axios.get(`/api/get-macro-type?keyIDMacro=${keyIDMacro}`);
+const getMacroTypeByKeyIDMacro = (key_id_macro) => {
+    return axios.get(`/api/get-macro-type?key_id_macro=${key_id_macro}`);
 }
-const getValueTypeByKeyIDMactoType = (keyIDMacro) => {
-    return axios.get(`/api/get-value-type-by-keyidmacrotype?keyIDMacro=${keyIDMacro}`);
+const getValueTypeByKeyIDMactoType = (key_id_macro) => {
+    return axios.get(`/api/get-value-type-by-keyidmacrotype?key_id_macro=${key_id_macro}`);
 }
 
 

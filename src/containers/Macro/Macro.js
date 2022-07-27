@@ -27,12 +27,43 @@ class Macro extends Component {
         super(props);
         this.state = {
             selectedOption: '',
+            id: -1,
+            rowClick: null,
+            dataChart:[],
+            
         }
     }
 
 
     componentDidMount() {
         //console.log(this.props);
+    }
+
+    updateDataChartFromItemChart = (rowClick) => {
+        let dataChart = this.state.dataChart;
+
+        if(!this.checkExistData(dataChart,rowClick))
+        {
+            dataChart.push(rowClick);
+            this.setState({
+                dataChart: dataChart
+            })
+        }
+
+        //console.log(this.state.dataChart);
+    }
+
+    checkExistData = (dataChart,rowClick)=>{
+
+
+        let result = false;
+        dataChart.map((row, indexRow) => {
+            if(row.id==rowClick.id)
+            {
+                result = true;
+            }
+        })
+        return result;
     }
 
     render() {
@@ -61,16 +92,21 @@ class Macro extends Component {
                     </div>
 
                     <div className="item-chart-macro">
-                        <ItemChart />
+                        <ItemChart dataChart={JSON.stringify(this.state.dataChart)} />
+
                     </div>
                 </div>
                 <div className="macro-nav-container">
                     <Switch>
-                        <Route path="/vi-mo/:keyIDMacro/:keyID" component={(MacroData)} />
+                        <Route path="/vi-mo/:key_id_macro/:key_id" component={(MacroData)} />
 
                     </Switch>
                     <div className='table-data'>
-                        <Route path="/vi-mo/:keyIDMacro/:keyID" component={(TableDataMacro)} />
+                        {/* <Route path="/vi-mo/:key_id_macro/:key_id" component={(TableDataMacro)} /> */}
+                        <Route
+                            path="/vi-mo/:key_id_macro/:key_id"
+                            render={(props) => <TableDataMacro {...props} authed={true} updateDataChartFromItemChart={this.updateDataChartFromItemChart} />}
+                        />
                     </div>
                 </div>
 

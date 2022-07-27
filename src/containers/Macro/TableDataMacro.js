@@ -4,8 +4,8 @@ import './TableDataMacro.scss'
 import { getAllQuantities } from '../../services/QuantitiesService'
 import { Link, withRouter } from 'react-router-dom';
 import { Hidden } from '@material-ui/core';
-import {getValueTypeByKeyIDMactoType} from '../../services/MacroTypeService'
-import {getTableByKeyIDMactoType} from '../../services/TableService'
+import { getValueTypeByKeyIDMactoType } from '../../services/MacroTypeService'
+import { getTableByKeyIDMactoType } from '../../services/TableService'
 
 
 
@@ -14,33 +14,34 @@ class TableDataMacro extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            keyID: "",
-            valueTypes: null,
+            key_id: "",
+            value_types: null,
             idMacro: -1,
             selectedRadio: "Value",
-            dataTable:null,
+            dataTable: null,
         }
 
     }
 
     async componentWillReceiveProps(props) {
-        //console.log(this.props)
-        let valueTypes = await getValueTypeByKeyIDMactoType(props.match.params.keyID);
-        const dataTable = await getTableByKeyIDMactoType(props.match.params.keyID,this.state.selectedRadio);
+
+        let value_types = await getValueTypeByKeyIDMactoType(props.match.params.key_id);
+        const dataTable = await getTableByKeyIDMactoType(props.match.params.key_id, this.state.selectedRadio);
 
         this.setState({
-            keyID: props.match.params.keyID,
+            key_id: props.match.params.key_id,
             idMacro: props.idMacro,
-            valueTypes: valueTypes,
+            value_types: value_types,
             dataTable: dataTable
         })
     }
     async componentDidMount() {
-        let valueTypes = await getValueTypeByKeyIDMactoType(this.props.match.params.keyID);
-        const dataTable = await getTableByKeyIDMactoType(this.props.match.params.keyID,this.state.selectedRadio);
+        // console.log(this.props)
+        let value_types = await getValueTypeByKeyIDMactoType(this.props.match.params.key_id);
+        const dataTable = await getTableByKeyIDMactoType(this.props.match.params.key_id, this.state.selectedRadio);
         this.setState({
-            keyID: this.props.match.params.keyID,
-            valueTypes: valueTypes,
+            key_id: this.props.match.params.key_id,
+            value_types: value_types,
             dataTable: dataTable
         })
     }
@@ -81,10 +82,10 @@ class TableDataMacro extends Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     handleRadioChange = async (event) => {
-        const dataTable = await getTableByKeyIDMactoType(this.props.match.params.keyID,event.target.value);
+        const dataTable = await getTableByKeyIDMactoType(this.props.match.params.key_id, event.target.value);
         this.setState({
             selectedRadio: event.target.value,
-            dataTable:dataTable
+            dataTable: dataTable
         });
     }
     handleSearch = () => {
@@ -107,12 +108,12 @@ class TableDataMacro extends Component {
         }
     }
     handleOnClickRow = (id, data) => {
-
+        this.props.updateDataChartFromItemChart(id, data);
     }
     render() {
         const collapseFlag = false;
         let classHidden = "";
-        const valueTypes = this.state.valueTypes;
+        const value_types = this.state.value_types;
         const dataTable = this.state.dataTable;
         // console.log(this.state.dataTable);
         if (collapseFlag) { classHidden = "hidden" }
@@ -120,7 +121,7 @@ class TableDataMacro extends Component {
             <Fragment>
                 <div className="radio-container">
                     {
-                        valueTypes!=null&&valueTypes.data.length>0 ? valueTypes.data.map((valueType,valueTypeIndex) => {
+                        value_types != null && value_types.data.length > 0 ? value_types.data.map((valueType, valueTypeIndex) => {
                             return (
                                 <label>
                                     <input type="radio" value={valueType}
@@ -130,23 +131,23 @@ class TableDataMacro extends Component {
                                 </label>
                             );
                         }
-                        ):null
+                        ) : null
                     }
 
                     <input type="text" id="txtSearch" onChange={this.handleSearch} placeholder="Tìm chỉ số" title="Type in a name"></input>
                 </div>
 
-                {dataTable?
+                {dataTable ?
                     dataTable.map((dataTable, dataTableIndex) => {
                         let headerTable = dataTable.header;
                         return (
-                            <table class="cell" id={dataTable.keyID}>
+                            <table class="cell" id={dataTable.key_id}>
                                 <thead>
                                     <tr>
-                                        {collapseFlag ? <th><span class="visually-hidden">Toggle</span></th> : ""
+                                        {/* {collapseFlag ? <th><span class="visually-hidden">Toggle</span></th> : ""
 
-                                        }
-                                        <th className='header-title-table'>{dataTable.names.nameVi}</th>
+                                        } */}
+                                        <th className='header-title-table'>{dataTable.names.name_vi}</th>
                                         {
 
                                             headerTable.map((headerTable, headerTableIndex) => {
@@ -161,12 +162,17 @@ class TableDataMacro extends Component {
 
                                     {
                                         dataTable.rows.map((rowLevel1, indexRow) => {
+                                            let rowClick = {}
+                                            rowClick.id = rowLevel1.idChild;
+                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel1.names.name_vi;
+                                            rowClick.data = rowLevel1.data;
                                             return (
                                                 <Fragment>
                                                     {
-                                                        rowLevel1.keyID == 'all' ? "" :
-                                                            <tr className="bold-general" onClick={() => this.handleOnClickRow(rowLevel1.id, rowLevel1.data)}>
-                                                                {collapseFlag ?
+
+                                                        rowLevel1.key_id == 'all' ? "" :
+                                                            <tr className="bold-general" onClick={() => this.handleOnClickRow(rowClick)}>
+                                                                {/* {collapseFlag ?
                                                                     <Fragment>
                                                                         <td className='td-toggle'>
                                                                             <button type="button"
@@ -180,9 +186,22 @@ class TableDataMacro extends Component {
                                                                         </td>
                                                                     </Fragment>
                                                                     : ""
-                                                                }
+                                                                } */}
                                                                 <td className="td-column-title">
-                                                                    {rowLevel1.names.nameVi}
+
+                                                                    <div>
+                                                                        {collapseFlag ?
+                                                                            <button type="button"
+                                                                                id={rowLevel1.idChild}
+                                                                                aria-expanded="false"
+                                                                                onClick={(event, eIDs) => this.toggle(event, rowLevel1.childRow)}
+                                                                            >
+                                                                                <svg xmlns="\http://www.w3.org/2000/svg&quot;" viewBox="0 0 80 80" focusable="false"><path d="M70.3 13.8L40 66.3 9.7 13.8z"></path></svg>
+                                                                            </button>
+                                                                            : ""
+                                                                        }
+                                                                        {rowLevel1.names.name_vi}
+                                                                    </div>
                                                                 </td>
                                                                 {
                                                                     rowLevel1.data.map((data, indexData) => {
@@ -198,14 +217,18 @@ class TableDataMacro extends Component {
                                                     }
                                                     {
                                                         rowLevel1.rows.map((rowLevel2, indexRow) => {
-                                                            if (rowLevel1.keyID == "all") { classHidden = ""; }
+                                                            let rowClick = {}
+                                                            rowClick.id = rowLevel2.idChild;
+                                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel2.names.name_vi;
+                                                            rowClick.data = rowLevel2.data;
+                                                            if (rowLevel1.key_id == "all") { classHidden = ""; }
                                                             return (
                                                                 <Fragment>
 
-                                                                    <tr id={rowLevel2.idChild} className={classHidden} onClick={() => this.handleOnClickRow(rowLevel2.id, rowLevel2.data)}>
-                                                                        {collapseFlag ? <td className='td-toggle'></td> : ""}
+                                                                    <tr id={rowLevel2.idChild} className={classHidden} onClick={() => this.handleOnClickRow(rowClick)}>
+                                                                        {/* {collapseFlag ? <td className='td-toggle'></td> : ""} */}
                                                                         <td className="td-column-title">
-                                                                            {rowLevel2.names.nameVi}
+                                                                            {rowLevel2.names.name_vi}
                                                                         </td>
                                                                         {
                                                                             rowLevel2.data.map((data, indexData) => {
@@ -219,11 +242,15 @@ class TableDataMacro extends Component {
                                                                     </tr>
                                                                     {
                                                                         rowLevel2.rows.map((rowLevel3, indexRow) => {
+                                                                            let rowClick = {}
+                                                                            rowClick.id = rowLevel3.idChild;
+                                                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel3.names.name_vi;
+                                                                            rowClick.data = rowLevel3.data;
                                                                             return (
-                                                                                <tr id={rowLevel3.idChild} className={classHidden} onClick={() => this.handleOnClickRow(rowLevel3.id, rowLevel3.data)}>
-                                                                                    {collapseFlag ? <td className='td-toggle'></td> : ""}
+                                                                                <tr id={rowLevel3.idChild} className={classHidden} onClick={() => this.handleOnClickRow(rowClick)}>
+                                                                                    {/* {collapseFlag ? <td className='td-toggle'></td> : ""} */}
                                                                                     <td className="td-column-title padding-child-row">
-                                                                                        {rowLevel3.names.nameVi}
+                                                                                        {rowLevel3.names.name_vi}
                                                                                     </td>
                                                                                     {
                                                                                         rowLevel3.data.map((data, indexData) => {
@@ -252,7 +279,7 @@ class TableDataMacro extends Component {
                             </table>
                         );
 
-                    }):""
+                    }) : ""
                 }
 
 

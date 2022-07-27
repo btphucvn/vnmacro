@@ -12,18 +12,18 @@ class MacroData extends Component {
             dataNav: null,
             selected: -1,
             keySelected: "",
-            keyID: "",
+            key_id: "",
             idMacro: -1,
         }
 
     }
     async componentWillReceiveProps(props) {
-        if (props.match.params.keyIDMacro == this.props.match.params.keyIDMacro) {
+        if (props.match.params.key_id_macro == this.props.match.params.key_id_macro) {
             const dataNav = this.state.dataNav;
             //console.log(props)
             if (dataNav && dataNav.length > 0) {
                 dataNav.map((item, index) => {
-                    if (item.keyID == props.match.params.keyID) {
+                    if (item.key_id == props.match.params.key_id) {
                         this.setState({
                             selected: index
                         })
@@ -32,17 +32,17 @@ class MacroData extends Component {
             }
         }
         else {
-            const data = await getMacroTypeByKeyIDMacro(props.match.params.keyIDMacro);
+            const data = await getMacroTypeByKeyIDMacro(props.match.params.key_id_macro);
             const dataNav = data.data;
             if (data.errCode == 0 && data.data.length > 0) {
                 this.setState({
                     dataNav: dataNav,
-                    keySelected: dataNav[0].keyID,
+                    keySelected: dataNav[0].key_id,
                 })
             }
             if (dataNav && dataNav.length > 0) {
                 dataNav.map((item, index) => {
-                    if (item.keyID == this.props.match.params.keyID) {
+                    if (item.key_id == this.props.match.params.key_id) {
                         this.setState({
                             selected: index,
                             idMacro:item.id,
@@ -55,19 +55,19 @@ class MacroData extends Component {
 
     }
     async componentDidMount() {
-        const data = await getMacroTypeByKeyIDMacro(this.props.match.params.keyIDMacro);
-        console.log(data);
+        const data = await getMacroTypeByKeyIDMacro(this.props.match.params.key_id_macro);
+        //console.log(data);
 
         const dataNav = data.data;
         if (data.errCode == 0 && data.data.length > 0) {
             this.setState({
                 dataNav: dataNav,
-                keySelected: dataNav[0].keyID,
+                keySelected: dataNav[0].key_id,
             })
         }
         if (dataNav && dataNav.length > 0) {
             dataNav.map((item, index) => {
-                if (item.keyID == this.props.match.params.keyID) {
+                if (item.key_id == this.props.match.params.key_id) {
                     this.setState({
                         selected: index,
                         idMacro:item.id,
@@ -99,7 +99,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.keyIDMacro + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }
@@ -107,7 +107,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link to={"/vi-mo/" + this.props.match.params.keyIDMacro + "/" + item.keyID} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
                                             </li>
                                         );
                                     }

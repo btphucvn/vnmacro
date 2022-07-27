@@ -10,9 +10,7 @@ import {
 } from "@material-ui/core";
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable }
-    from "react-beautiful-dnd";
-import InboxIcon from "@material-ui/icons/Inbox";
-import EditIcon from "@material-ui/icons/Edit";
+from "react-beautiful-dnd";
 import './ItemChart.scss'
 
 
@@ -20,7 +18,7 @@ const getItems = count =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
         id: `item-${k}`,
         primary: `item ${k} `,
-        secondary: k % 2 === 0 ? `Whatever for ${k}` : undefined
+        // secondary: k % 2 === 0 ? `Whatever for ${k}` : undefined
     }));
 
 // a little function to help us with reordering the result
@@ -46,16 +44,31 @@ const getListStyle = isDraggingOver => ({
 });
 
 
-class IteamChart extends Component {
+class ItemChart extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            dataChart:null,
             items: getItems(10)
         };
         this.onDragEnd = this.onDragEnd.bind(this);
     }
 
+    componentDidMount()
+    {
+        //let dataChart = this.props.match.params.dataChart;
+        console.log(this.props);
+    }
+    componentDidUpdate(prevProps) {
+        //console.log(prevProps);
+      }
+    componentWillReceiveProps(props)
+    {
+        //console.log(props.dataChart);
+        console.log(JSON.parse(props.dataChart))
+    }
+    
     onDragEnd(result) {
         // dropped outside the list
         if (!result.destination) {
@@ -81,49 +94,52 @@ class IteamChart extends Component {
         console.log(event.target.value);
     }
     render() {
-        //console.log(this.state.items)
+        //console.log("rerender itemchart.js")
+
+        //console.log("item chart: "+this.state.items)
         return (
+            <Fragment>
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable droppableId="droppable">
+                        {(provided, snapshot) => (
+                            <RootRef rootRef={provided.innerRef}>
+                                <List style={getListStyle(snapshot.isDraggingOver)}>
+                                    {this.state.items.map((item, index) => (
+                                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            {(provided, snapshot) => (
+                                                <ListItem
+                                                    ContainerComponent="li"
+                                                    ContainerProps={{ ref: provided.innerRef }}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )}
+                                                >
+                                                    <div className="content-item">
+                                                        <i className="fas fa-chart-line chart-item"></i>
+                                                        <input type="color" onChange={this.handleChangeColor} value="#45306c" ></input>
+                                                        <ListItemText
+                                                            primary={item.primary}
+                                                        />
+                                                    </div>
 
-            <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <RootRef rootRef={provided.innerRef}>
-                            <List style={getListStyle(snapshot.isDraggingOver)}>
-                                {this.state.items.map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                                        {(provided, snapshot) => (
-                                            <ListItem
-                                                ContainerComponent="li"
-                                                ContainerProps={{ ref: provided.innerRef }}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}
-                                            >
-                                                <div className="content-item">
-                                                    <i className="fas fa-chart-line chart-item"></i>
-                                                    <input type="color" onChange={this.handleChangeColor} value="#45306c" ></input>
-                                                    <ListItemText
-                                                        primary={item.primary}
-                                                    />
-                                                </div>
+                                                    {/* <ListItemSecondaryAction>
+                                                        <i className="far fa-trash-alt" onClick={this.handleOnClickDelete}></i>
 
-                                                <ListItemSecondaryAction>
-                                                    <i className="far fa-trash-alt" onClick={this.handleOnClickDelete}></i>
-
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </List>
-                        </RootRef>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                                                    </ListItemSecondaryAction> */}
+                                                </ListItem>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </List>
+                            </RootRef>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </Fragment>
         );
 
     }
@@ -140,4 +156,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IteamChart);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemChart);
