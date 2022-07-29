@@ -36,10 +36,16 @@ class Macro extends Component {
 
 
     componentDidMount() {
-        //console.log(this.props);
     }
 
-    updateDataChartFromItemChart = (rowClick) => {
+    updateDataChartFromItemChart=(dataFromItemChart)=>{
+        this.setState({
+            dataChart:dataFromItemChart
+        })
+
+    }
+
+    updateDataChartFromTableClick = (rowClick) => {
         let dataChart = this.state.dataChart;
 
         if(!this.checkExistData(dataChart,rowClick))
@@ -49,8 +55,8 @@ class Macro extends Component {
                 dataChart: dataChart
             })
         }
+        //console.log(JSON.stringify(this.state.dataChart))
 
-        //console.log(this.state.dataChart);
     }
 
     checkExistData = (dataChart,rowClick)=>{
@@ -82,17 +88,17 @@ class Macro extends Component {
                                 <Select options={options} defaultValue={{ value: 'ALL', label: 'ALL' }} />
                             </div>
                             <div className='expand-modal-chart'>
-                                <i class="fas fa-expand-arrows-alt"></i>
+                                <i className="fas fa-expand-arrows-alt"></i>
                             </div>
                         </div>
                         <div className="chart-macro">
-                            <ChartMacro />
+                            <ChartMacro dataChart={this.state.dataChart} />
                         </div>
 
                     </div>
 
                     <div className="item-chart-macro">
-                        <ItemChart dataChart={JSON.stringify(this.state.dataChart)} />
+                        <ItemChart dataChart={JSON.stringify(this.state.dataChart)} updateDataChartFromItemChart={this.updateDataChartFromItemChart}/>
 
                     </div>
                 </div>
@@ -105,7 +111,7 @@ class Macro extends Component {
                         {/* <Route path="/vi-mo/:key_id_macro/:key_id" component={(TableDataMacro)} /> */}
                         <Route
                             path="/vi-mo/:key_id_macro/:key_id"
-                            render={(props) => <TableDataMacro {...props} authed={true} updateDataChartFromItemChart={this.updateDataChartFromItemChart} />}
+                            render={(props) => <TableDataMacro {...props} authed={true} updateDataChartFromTableClick={this.updateDataChartFromTableClick} />}
                         />
                     </div>
                 </div>

@@ -1,27 +1,67 @@
+@import "../../styles/common.scss";
+
 .item-chart-macro {
-    .chart-item {
-        font-weight: 600;
-        color      : #cfcbcb;
-        font-size  : 40px;
+    .chart-items {
+        display    : flex;
+        align-items: center;
 
-
+        .chart-icon {
+            font-weight: 600;
+            color      : #cfcbcb;
+            font-size: 2em;
+        }
     }
+
     .content-item {
-        display: flex;
+        display  : flex;
         flex-flow: row;
-        gap: 5px;
+        gap      : 5px;
+
+        .input-color {
+            display: flex;
+            align-items: center;
+            input {
+
+                height: 80%;
+            }
+        }
     }
 }
 
 input[type="color"] {
-    appearance: none;
-    border: 1px solid #dddddd;
-    padding: 0;
-    height: 35px;
-    width: 17px;
+    appearance   : none;
+    border       : 1px solid #dddddd;
+    padding      : 0;
+    height       : 35px;
+    width        : 17px;
     border-radius: 5%;
 }
 
 ::-webkit-color-swatch {
     border: none;
+}
+
+.MuiListItemSecondaryAction-root {
+    top: 15% !important;
+    right: 10px !important;
+}
+
+li.MuiListItem-container {
+    border       : 1px solid whitesmoke;
+    margin-left  : 5px;
+    margin       : 5px;
+    border-radius: 2%;
+}
+
+.MuiListItemText-root {
+    margin-top: 0px;
+    .MuiTypography-body1 {
+        font-size: 0.7rem !important;
+    }
+}
+.MuiListItem-secondaryAction{
+    padding-right: 20px !important;
+}
+.MuiListItem-gutters{
+    padding-left: 7px !important;
 }

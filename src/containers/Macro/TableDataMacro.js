@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Hidden } from '@material-ui/core';
 import { getValueTypeByKeyIDMactoType } from '../../services/MacroTypeService'
 import { getTableByKeyIDMactoType } from '../../services/TableService'
-
+import { CommonUtils } from '../../utils';
 
 
 
@@ -23,16 +23,33 @@ class TableDataMacro extends Component {
 
     }
 
+    checkExitsValueType(value_types,valueType){
+        for(let item of value_types)
+        {
+            if(item==valueType)
+            {
+                return true;
+            }
+        }
+        return false
+    }
+
     async componentWillReceiveProps(props) {
 
         let value_types = await getValueTypeByKeyIDMactoType(props.match.params.key_id);
         const dataTable = await getTableByKeyIDMactoType(props.match.params.key_id, this.state.selectedRadio);
-
+        
+        let selectedRadio = this.state.selectedRadio;
+        if(value_types.data!=undefined&&!this.checkExitsValueType(value_types.data,selectedRadio))
+        {
+            selectedRadio=value_types.data[0];
+        }
         this.setState({
             key_id: props.match.params.key_id,
             idMacro: props.idMacro,
             value_types: value_types,
-            dataTable: dataTable
+            dataTable: dataTable,
+            selectedRadio:selectedRadio
         })
     }
     async componentDidMount() {
@@ -108,7 +125,7 @@ class TableDataMacro extends Component {
         }
     }
     handleOnClickRow = (id, data) => {
-        this.props.updateDataChartFromItemChart(id, data);
+        this.props.updateDataChartFromTableClick(id, data);
     }
     render() {
         const collapseFlag = false;
@@ -141,10 +158,10 @@ class TableDataMacro extends Component {
                     dataTable.map((dataTable, dataTableIndex) => {
                         let headerTable = dataTable.header;
                         return (
-                            <table class="cell" id={dataTable.key_id}>
+                            <table className="cell" id={dataTable.key_id}>
                                 <thead>
                                     <tr>
-                                        {/* {collapseFlag ? <th><span class="visually-hidden">Toggle</span></th> : ""
+                                        {/* {collapseFlag ? <th><span className="visually-hidden">Toggle</span></th> : ""
 
                                         } */}
                                         <th className='header-title-table'>{dataTable.names.name_vi}</th>
@@ -164,7 +181,7 @@ class TableDataMacro extends Component {
                                         dataTable.rows.map((rowLevel1, indexRow) => {
                                             let rowClick = {}
                                             rowClick.id = rowLevel1.idChild;
-                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel1.names.name_vi;
+                                            rowClick.name = dataTable.names.name_vi + " - " + rowLevel1.names.name_vi;
                                             rowClick.data = rowLevel1.data;
                                             return (
                                                 <Fragment>
@@ -207,7 +224,10 @@ class TableDataMacro extends Component {
                                                                     rowLevel1.data.map((data, indexData) => {
                                                                         return (
                                                                             <td className="td-column-value">
-                                                                                {parseFloat(data.value).toFixed(2)}
+                                                                                {parseFloat(rowLevel1.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                    CommonUtils.numberWithCommas(parseFloat(rowLevel1.data[indexData][1]).toFixed(0))
+                                                                                    : parseFloat(rowLevel1.data[indexData][1]).toFixed(2)
+                                                                                }
                                                                             </td>
                                                                         );
 
@@ -219,7 +239,7 @@ class TableDataMacro extends Component {
                                                         rowLevel1.rows.map((rowLevel2, indexRow) => {
                                                             let rowClick = {}
                                                             rowClick.id = rowLevel2.idChild;
-                                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel2.names.name_vi;
+                                                            rowClick.name = dataTable.names.name_vi + " - " + rowLevel2.names.name_vi;
                                                             rowClick.data = rowLevel2.data;
                                                             if (rowLevel1.key_id == "all") { classHidden = ""; }
                                                             return (
@@ -234,7 +254,10 @@ class TableDataMacro extends Component {
                                                                             rowLevel2.data.map((data, indexData) => {
                                                                                 return (
                                                                                     <td className="td-column-value">
-                                                                                        {parseFloat(data.value).toFixed(2)}
+                                                                                        {parseFloat(rowLevel2.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                            CommonUtils.numberWithCommas(parseFloat(rowLevel2.data[indexData][1]).toFixed(0))
+                                                                                            : parseFloat(rowLevel2.data[indexData][1]).toFixed(2)
+                                                                                        }
                                                                                     </td>
                                                                                 );
                                                                             })
@@ -244,7 +267,7 @@ class TableDataMacro extends Component {
                                                                         rowLevel2.rows.map((rowLevel3, indexRow) => {
                                                                             let rowClick = {}
                                                                             rowClick.id = rowLevel3.idChild;
-                                                                            rowClick.title = dataTable.names.name_vi + " - " + rowLevel3.names.name_vi;
+                                                                            rowClick.name = dataTable.names.name_vi + " - " + rowLevel3.names.name_vi;
                                                                             rowClick.data = rowLevel3.data;
                                                                             return (
                                                                                 <tr id={rowLevel3.idChild} className={classHidden} onClick={() => this.handleOnClickRow(rowClick)}>
@@ -256,7 +279,10 @@ class TableDataMacro extends Component {
                                                                                         rowLevel3.data.map((data, indexData) => {
                                                                                             return (
                                                                                                 <td className="td-column-value">
-                                                                                                    {parseFloat(data.value).toFixed(2)}
+                                                                                                    {parseFloat(rowLevel3.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                                        CommonUtils.numberWithCommas(parseFloat(rowLevel3.data[indexData][1]).toFixed(0))
+                                                                                                        : parseFloat(rowLevel3.data[indexData][1]).toFixed(2)
+                                                                                                    }
                                                                                                 </td>
                                                                                             );
                                                                                         })

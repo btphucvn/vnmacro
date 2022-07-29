@@ -13,6 +13,8 @@
     "bootstrap": "^5.0.1",
     "chartjs-plugin-streaming": "^2.0.0",
     "connected-react-router": "^6.9.1",
+    "highcharts": "^10.2.0",
+    "highcharts-react-official": "^3.1.0",
     "i": "^0.3.7",
     "kaktana-react-lightweight-charts": "^2.0.0",
     "lightweight-charts": "^3.8.0",

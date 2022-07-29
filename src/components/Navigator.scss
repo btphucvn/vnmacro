@@ -45,7 +45,7 @@
                 background-color: darken(whitesmoke, 10) !important;
             }
             .menu {
-                width         : 205px;
+                min-width: 205px;
                 padding       : 0 15px;
                 height        : 35px;
                 line-height   : 35px;
