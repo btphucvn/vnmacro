@@ -42,7 +42,6 @@ class Macro extends Component {
         this.setState({
             dataChart:dataFromItemChart
         })
-
     }
 
     updateDataChartFromTableClick = (rowClick) => {

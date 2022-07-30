@@ -10,7 +10,7 @@ class Macro extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             //series:null,
             options: {
                 title: {
@@ -21,7 +21,19 @@ class Macro extends Component {
                 },
                 xAxis: {
                     gridLineWidth: 0,
-                    type: 'datetime'
+                    type: 'datetime',
+                    lineColor: 'transparent'
+
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0,
+                        shadow: false
+                    },
+                    spline: {
+                        shadow: true,
+                        pointRange: 100,
+                    }
                 },
                 // yAxis: [{title:""},{title:""}],
 
@@ -44,9 +56,9 @@ class Macro extends Component {
 
                 yAxis: {
                     gridLineWidth: 0,
-                                        title:"",
+                    title: "",
                 },
-            
+
                 series: []
             }
         }
@@ -56,11 +68,12 @@ class Macro extends Component {
 
     }
 
-    componentWillReceiveProps(props)
-    {
+    componentWillReceiveProps(props) {
         const dataChart = props.dataChart;
-        let series=[];
-        dataChart.map((data,index)=>{
+        //console.log(dataChart)
+
+        let series = [];
+        dataChart.map((data, index) => {
             let serie = {};
             serie.marker = {
                 enabled: false
@@ -69,16 +82,20 @@ class Macro extends Component {
             serie.color = data.color;
             serie.zindex = data.zindex;
             serie.data = data.data;
-            serie.shadow = true;
+            if (!data.type) {
+                data.type = "spline"
+            }
             serie.type = data.type;
+
             serie.yAxis = 0;
             series.push(serie);
         })
         let options = this.state.options;
         options.series = series;
-        this.setState=({
-            options:options
+        this.setState = ({
+            options: options
         })
+        //console.log(options);
     }
 
 

@@ -13,6 +13,9 @@ import { DragDropContext, Droppable, Draggable }
     from "react-beautiful-dnd";
 import './ItemChart.scss'
 
+import Modal from "react-modal";
+import lineChart from "../../assets/images/line-chart.svg";
+import barChart from "../../assets/images/bar-chart.svg";
 
 const arrColor = ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
     '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'];
@@ -42,9 +45,11 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     })
 });
 
+
 const getListStyle = isDraggingOver => ({
     //background: isDraggingOver ? 'lightblue' : 'lightgrey',
 });
+let clickedID = null;
 
 
 class ItemChart extends Component {
@@ -54,10 +59,17 @@ class ItemChart extends Component {
         this.state = {
             dataChart: null,
             items: null,
+            isOpen: false,
+            setIsOpen: false,
         };
         this.onDragEnd = this.onDragEnd.bind(this);
     }
-
+    toggleModal = (id) => {
+        clickedID = id;
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+    }
     componentDidMount() {
         // //let dataChart = this.props.match.params.dataChart;
         // //console.log(this.props);
@@ -74,7 +86,7 @@ class ItemChart extends Component {
         for (let i = 0; i < arrColor.length; i++) {
             let exitsColor = false;
 
-            dataChart.map((item,index)=>{
+            dataChart.map((item, index) => {
                 if (item.color != undefined && item.color == arrColor[i]) {
                     exitsColor = true;
                 }
@@ -88,7 +100,8 @@ class ItemChart extends Component {
     }
 
     componentWillReceiveProps(props) {
-        if (props.dataChart != JSON.stringify(this.setState.dataChart)) {
+
+        if (JSON.stringify(this.state.dataChart) != JSON.stringify(props)) {
             let dataChart = JSON.parse(props.dataChart);
             //console.log(dataChart);
             dataChart.map((item, index) => {
@@ -98,7 +111,7 @@ class ItemChart extends Component {
                 item.zindex = index;
             })
 
-           
+
             if (dataChart) {
                 this.setState({
                     dataChart: dataChart,
@@ -135,20 +148,29 @@ class ItemChart extends Component {
     handleOnClickDelete = (id) => {
         let dataChart = this.state.dataChart;
 
-        dataChart = dataChart.filter(function( obj ) {
+        dataChart = dataChart.filter(function (obj) {
             return obj.id !== id;
-          });
+        });
         this.props.updateDataChartFromItemChart(dataChart);
 
 
     }
+    handleOnclickModalItem = (type) => {
+        let dataChart = this.state.dataChart;
+        dataChart.map((item, index) => {
+            if (item.id == clickedID) {
+                item.type = type;
+            }
+        })
+        //console.log(dataChart);
+        this.props.updateDataChartFromItemChart(dataChart);
+    }
     handleChangeColor = (event, id) => {
 
         let dataChart = this.state.dataChart;
-        dataChart.map((item,index)=>{
-            if(item.id==id)
-            {
-                item.color=event.target.value;
+        dataChart.map((item, index) => {
+            if (item.id == id) {
+                item.color = event.target.value;
             }
         })
         this.props.updateDataChartFromItemChart(dataChart);
@@ -162,6 +184,46 @@ class ItemChart extends Component {
         //console.log(this.state.items)
         return (
             <Fragment>
+
+                <Modal
+                    isOpen={this.state.isOpen}
+                    onRequestClose={() => this.toggleModal}
+                    contentLabel="My dialog"
+                    className="modal-select-chart"
+                >
+                    <div className='modal-header-type-chart'>
+                        <div className='modal-header-none'>
+                        </div>
+                        <div className='modal-header-title'>
+                            <span>Chọn loại biểu đồ</span>
+                        </div>
+                        <div className='modal-header-close'>
+                            <i onClick={this.toggleModal} class="fas fa-times-circle modal-header-button-close"></i>
+                        </div>
+                    </div>
+                    <div className='modal-chart-type'>
+                        <div className='line-chart hover-chart' onClick={() => this.handleOnclickModalItem("spline")}
+
+                        >
+                            <div className="image"
+                                style={{ backgroundImage: `url(${lineChart})` }}
+                            ></div>
+                            <span>Đường</span>
+                        </div>
+                        <div className='bar-chart hover-chart' onClick={() => this.handleOnclickModalItem("column")}
+
+                        >
+                            <div className="image"
+                                style={{ backgroundImage: `url(${barChart})` }}
+                            ></div>
+                            <span>Biểu đồ cột</span>
+                        </div>
+
+
+                    </div>
+                    <div className='modal-submit'></div>
+
+                </Modal>
                 <DragDropContext onDragEnd={this.onDragEnd}>
                     <Droppable droppableId="droppable">
                         {(provided, snapshot) => (
@@ -184,24 +246,20 @@ class ItemChart extends Component {
                                                         <div className="content-item">
 
                                                             <div className='chart-items'>
-                                                                <i className="fas fa-chart-line chart-icon"></i>
+                                                                <i onClick={() => this.toggleModal(item.id)} className="fas fa-chart-line chart-icon"></i>
 
                                                             </div>
-
-
                                                             <div className='input-color'>
                                                                 <input type="color" onChange={event => this.handleChangeColor(event, item.id)} value={item.color} ></input>
                                                             </div>
                                                             <ListItemText
                                                                 primary={item.name}
                                                             />
-
-
                                                         </div>
 
                                                         <ListItemSecondaryAction>
                                                             <div className='delete-item'>
-                                                                <i id={item.id} className="fas fa-times" onClick={(id)=>this.handleOnClickDelete(item.id)}></i>
+                                                                <i id={item.id} className="fas fa-times" onClick={(id) => this.handleOnClickDelete(item.id)}></i>
 
                                                             </div>
                                                         </ListItemSecondaryAction>

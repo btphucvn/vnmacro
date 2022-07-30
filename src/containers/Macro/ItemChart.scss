@@ -8,7 +8,7 @@
         .chart-icon {
             font-weight: 600;
             color      : #cfcbcb;
-            font-size: 2em;
+            font-size  : 2em;
         }
     }
 
@@ -18,8 +18,9 @@
         gap      : 5px;
 
         .input-color {
-            display: flex;
+            display    : flex;
             align-items: center;
+
             input {
 
                 height: 80%;
@@ -42,7 +43,7 @@ input[type="color"] {
 }
 
 .MuiListItemSecondaryAction-root {
-    top: 15% !important;
+    top  : 15% !important;
     right: 10px !important;
 }
 
@@ -55,13 +56,132 @@ li.MuiListItem-container {
 
 .MuiListItemText-root {
     margin-top: 0px;
+
     .MuiTypography-body1 {
         font-size: 0.7rem !important;
     }
 }
-.MuiListItem-secondaryAction{
+
+.MuiListItem-secondaryAction {
     padding-right: 20px !important;
 }
-.MuiListItem-gutters{
+
+.MuiListItem-gutters {
     padding-left: 7px !important;
+}
+
+.ReactModal__Overlay--after-open {
+    // background-color: rgb(133 128 128 / 75%);;
+    background-color: rgba(7, 7, 7, 0.4) !important;
+    position        : absolute;
+    z-index         : 100;
+}
+
+.modal-select-chart {
+    width          : 30%;
+    height         : 40%;
+    //border       : 1px solid whitesmoke;
+    background     : white;
+    border-radius  : 2%;
+    position       : absolute;
+    top            : 40%;
+    left           : 50%;
+    outline        : none;
+    transform      : translate(-50%, -50%);
+    min-width      : 150px;
+    min-height     : 350px;
+
+    .modal-header-type-chart {
+        //border: 1px solid purple;
+        width         : 100%;
+        height        : 10%;
+        display       : flex;
+        flex-direction: row;
+        padding       : 3px;
+
+        .modal-header-none {
+            width: 5%;
+        }
+
+        .modal-header-title {
+            width          : 90%;
+            display        : flex;
+            justify-content: center;
+
+            span {
+                font-weight  : 600;
+                border-bottom: 3px solid $colorsub;
+            }
+        }
+
+        .modal-header-close {
+            width          : 5%;
+            display        : flex;
+            justify-content: space-around;
+
+            .modal-header-button-close {
+
+                color: #bd0303;
+            }
+        }
+    }
+
+    .modal-chart-type {
+        //border   : 1px solid greenyellow;
+        width          : 100%;
+        height         : 75%;
+        display        : flex;
+        flex-wrap      : wrap;
+        padding        : 20px;
+        gap            : 20px;
+        justify-content: center;
+
+        .hover-chart {
+            &:hover {
+                background-color: whitesmoke;
+                cursor          : pointer;
+            }
+        }
+
+        .line-chart,
+        .bar-chart {
+            width          : 120px;
+            height         : 120px;
+            display        : flex;
+            justify-content: center;
+            padding        : 10px;
+            flex-flow      : wrap;
+
+            .image {
+                width           : 70%;
+                height          : 70%;
+                background-image: url('../../assets/images/line-chart.svg');
+            }
+        }
+
+
+        .line-chart {
+            .image {
+                width           : 70%;
+                height          : 70%;
+                // background-image: url('../../assets/images/line-chart.svg');
+            }
+        }
+
+        .bar-chart {
+            .image {
+                width           : 70%;
+                height          : 70%;
+                //background-image: url('../../assets/images/bar-chart.svg');
+            }
+        }
+    }
+
+    .modal-submit {
+        //border: 1px solid gray;
+        width : 100%;
+        height: 15%;
+
+    }
+
 }
