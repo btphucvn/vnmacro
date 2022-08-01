@@ -61,7 +61,7 @@ export const adminMenu = [
         //hệ thống
         name: 'header.manufacturing-title', menus: [
             {
-                name: 'header.manufacturing.iip', link: '/vi-mo/san-xuat/chi-so-ppi-viet-nam'
+                name: 'header.manufacturing.iip', link: '/vi-mo/san-xuat/chi-so-iip-viet-nam'
             },
             {
                 name: 'header.manufacturing.product', link: '/vi-mo/san-xuat/san-pham-cong-nghiep'
@@ -73,7 +73,7 @@ export const adminMenu = [
                 name: 'header.manufacturing.price-input', link: '/vi-mo/san-xuat/chi-so-gia-dau-vao-san-xuat'
             },
             {
-                name: 'header.manufacturing.ppi', link: '/vi-mo/san-xuat/chi-so-ppi-viet-nam'
+                name: 'header.manufacturing.ppi', link: '/vi-mo/san-xuat/chi-so-gia-san-xuat-ppi-viet-nam'
             },
         ]
     },

@@ -182,17 +182,25 @@ class ItemChart extends Component {
                     item.type = "column";
                     item.stack = "stack";
                     item.stacking= 'normal';
-                } 
-                else{
-                    item.stack = null;
                 }
+                if (type == "column-percent-stack") {
+                    item.type = "column";
+                    item.stack = "percent";
+                    item.stacking= 'percent';
+                }
+                if(type=="column")
+                {
+                    item.stack = item.id;
+                    // item.stacking= 'normal';
+                    delete item.stacking;
+                }
+
             }
 
-            if (item.stack != "stack") {
-                delete item.stack;
-                delete item.stacking;
+            // if (item.stack != "stack") {
+            //     delete item.stacking;
 
-            }
+            // }
         })
         this.toggleModal(null);
         //console.log(dataChart);
@@ -211,9 +219,16 @@ class ItemChart extends Component {
         //     dataChart:dataChart
         // })
     }
-    getTypeChartByType(type, stack) {
-        if (stack) {
-            type = type + "-" + stack;
+    getTypeChartByType(type, stacking) {
+        if (stacking=="normal") {
+            type = "column-stack";
+        }
+        if (stacking=="percent") {
+            type = "column-percent-stack";
+        }
+        if(stacking==undefined && type.includes("column"))
+        {
+            type="column";
         }
         for (let i = 0; i < typeCharts.length; i++) {
             if (type == typeCharts[i].type) {
@@ -231,7 +246,7 @@ class ItemChart extends Component {
 
                 <Modal
                     isOpen={this.state.isOpen}
-                    onRequestClose={() => this.toggleModal}
+                    onRequestClose={this.toggleModal}
                     contentLabel="My dialog"
                     className="modal-select-chart"
                 >
@@ -296,7 +311,7 @@ class ItemChart extends Component {
 
                                                             <div className='chart-items' onClick={() => this.toggleModal(item.id)}
                                                                 style={{
-                                                                    backgroundImage: `url(${this.getTypeChartByType(item.type, item.stack)})`,
+                                                                    backgroundImage: `url(${this.getTypeChartByType(item.type, item.stacking)})`,
                                                                     backgroundSize: 'cover',
                                                                     backgroundRepeat: 'no-repeat',
                                                                 }}

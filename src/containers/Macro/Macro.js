@@ -82,17 +82,8 @@ class Macro extends Component {
                 </div>
                 <div className="macro-container">
                     <div className="chart-macro-container">
-                        <div className="chart-macro-header">
-                            <div className="select-time-scale">
-                                <Select options={options} defaultValue={{ value: 'ALL', label: 'ALL' }} />
-                            </div>
-                            <div className='expand-modal-chart'>
-                                <i className="fas fa-expand-arrows-alt"></i>
-                            </div>
-                        </div>
-                        <div className="chart-macro">
+
                             <ChartMacro dataChart={this.state.dataChart} />
-                        </div>
 
                     </div>
 

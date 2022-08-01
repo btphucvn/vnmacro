@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { drop } from 'lodash';
+import Select from 'react-select'
+import Modal from "react-modal";
 
 
 
@@ -11,7 +13,14 @@ class Macro extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            //series:null,
+            selectRangeOption: [
+                { value: 0, label: 'ALL' },
+                { value: (Math.floor(Date.now() / 1000) - (365 * 3 * 86400)) * 1000, label: '3y' },
+                { value: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000, label: '5y' },
+                { value: (Math.floor(Date.now() / 1000) - (365 * 10 * 86400)) * 1000, label: '10y' }
+
+            ],
+            isOpen: false,
             options: {
                 title: {
                     text: null
@@ -23,14 +32,14 @@ class Macro extends Component {
                     gridLineWidth: 0,
                     type: 'datetime',
                     lineColor: 'transparent',
-                   // min: 1420045200000
+                    min: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000
                 },
                 plotOptions: {
                     column: {
                         borderWidth: 0,
                         shadow: false,
                         //stacking: 'normal',
-                        padding:5,
+                        padding: 5,
                         groupPadding: 0.3,
 
                     },
@@ -75,7 +84,18 @@ class Macro extends Component {
     componentDidMount() {
 
     }
-
+    handleClick = event => {
+        event.preventDefault();
+        console.log("aaaa")
+        this.setState({ isOpen: true }, () => {
+            document.addEventListener("click", this.closeMenu);
+        });
+    };
+    closeMenu = () => {
+        this.setState({ isOpen: false }, () => {
+            document.removeEventListener('click', this.closeMenu);
+        });
+    }
     componentWillReceiveProps(props) {
         const dataChart = props.dataChart;
         //console.log(dataChart)
@@ -93,10 +113,10 @@ class Macro extends Component {
             if (!data.type) {
                 data.type = "spline"
             }
-            if(data.stack){
+            if (data.stack) {
                 serie.stack = data.stack;
             }
-            if(data.stacking){
+            if (data.stacking) {
                 serie.stacking = data.stacking;
             }
             serie.type = data.type;
@@ -105,24 +125,89 @@ class Macro extends Component {
         })
         let options = this.state.options;
         options.series = series;
-        this.setState = ({
+
+        let selectRangeOption = this.state.selectRangeOption;
+        selectRangeOption[0].value = this.getOldestTimeStamp(options);
+
+        this.setState({
+            options: options,
+            selectRangeOption: selectRangeOption
+        })
+        //console.log(selectRangeOption);
+        //console.log(options);
+    }
+    getOldestTimeStamp(options) {
+        const series = options.series;
+        let oldestTimestamp = 999999999999999;
+        for (let serie of series) {
+            let tmp = serie.data[serie.data.length - 1][0];
+            if (tmp < oldestTimestamp) {
+                oldestTimestamp = tmp;
+            }
+        }
+        return oldestTimestamp;
+    }
+    handleChangeSelectRange = (selected) => {
+
+        let options = this.state.options;
+        options.xAxis.min = selected.value;
+
+        this.setState({
             options: options
         })
-        console.log(options);
+    }
+    toggleModal = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
     }
 
 
     render() {
-
+        //console.log("rerender")
 
         return (
             <Fragment>
-
-                <HighchartsReact
-                    containerProps={{ style: { height: "100%" } }}
-                    highcharts={Highcharts}
-                    options={this.state.options}
-                />
+                <div className="chart-macro-header">
+                    <div className="select-time-scale">
+                        <Select options={this.state.selectRangeOption}
+                            defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 5 * 86400), label: '5y' }}
+                            value={this.state.value}
+                            onChange={(value) => this.handleChangeSelectRange(value)}
+                        />
+                    </div>
+                    <div className='expand-modal-chart'>
+                        <i onClick={this.toggleModal} className="fas fa-expand-arrows-alt"></i>
+                    </div>
+                </div>
+                <div className='chart-macro'>
+                    <HighchartsReact
+                        containerProps={{ style: { height: "100%" } }}
+                        highcharts={Highcharts}
+                        options={this.state.options}
+                    />
+                </div>
+                <Modal
+                    isOpen={this.state.isOpen}
+                    onRequestClose={this.toggleModal}
+                    contentLabel="My dialog"
+                    className="chart-macro-modal"
+                >
+                    <div className="chart-macro-header-modal">
+                        <div className="select-time-scale">
+                            <Select options={this.state.selectRangeOption}
+                                defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 5 * 86400), label: '5y' }}
+                                value={this.state.value}
+                                onChange={(value) => this.handleChangeSelectRange(value)}
+                            />
+                        </div>
+                    </div>
+                    <HighchartsReact
+                        containerProps={{ style: { height: "80%" } }}
+                        highcharts={Highcharts}
+                        options={this.state.options}
+                    />
+                </Modal>
             </Fragment>
         );
     }

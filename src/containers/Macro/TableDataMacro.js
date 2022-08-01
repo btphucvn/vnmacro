@@ -23,11 +23,9 @@ class TableDataMacro extends Component {
 
     }
 
-    checkExitsValueType(value_types,valueType){
-        for(let item of value_types)
-        {
-            if(item==valueType)
-            {
+    checkExitsValueType(value_types, valueType) {
+        for (let item of value_types) {
+            if (item == valueType) {
                 return true;
             }
         }
@@ -37,19 +35,19 @@ class TableDataMacro extends Component {
     async componentWillReceiveProps(props) {
 
         let value_types = await getValueTypeByKeyIDMactoType(props.match.params.key_id);
-        const dataTable = await getTableByKeyIDMactoType(props.match.params.key_id, this.state.selectedRadio);
-        
+
         let selectedRadio = this.state.selectedRadio;
-        if(value_types.data!=undefined&&!this.checkExitsValueType(value_types.data,selectedRadio))
-        {
-            selectedRadio=value_types.data[0];
+        if (value_types.data != undefined && !this.checkExitsValueType(value_types.data, selectedRadio)) {
+            selectedRadio = value_types.data[0];
         }
+        const dataTable = await getTableByKeyIDMactoType(props.match.params.key_id, selectedRadio);
+
         this.setState({
             key_id: props.match.params.key_id,
             idMacro: props.idMacro,
             value_types: value_types,
             dataTable: dataTable,
-            selectedRadio:selectedRadio
+            selectedRadio: selectedRadio
         })
     }
     async componentDidMount() {

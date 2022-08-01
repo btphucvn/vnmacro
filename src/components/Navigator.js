@@ -12,6 +12,7 @@ class MenuGroup extends Component {
         return (
             <Fragment>
                 <li className="menu-group">
+
                     <div className="menu-group-name">
                         <FormattedMessage id={name} />
                     </div>
