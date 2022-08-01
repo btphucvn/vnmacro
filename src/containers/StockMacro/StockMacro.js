@@ -26,12 +26,16 @@ class StockMacro extends Component {
 
     formatSelectOptions = (selectOptions) => {
         let options = [];
-        for (let i = 0; i < selectOptions.length; i++) {
-            let option = {};
-            option.value = selectOptions[i].id;
-            option.label = selectOptions[i].vietnameseName;
-            options.push(option);
+        if (selectOptions) {
+            for (let i = 0; i < selectOptions.length; i++) {
+                let option = {};
+                option.value = selectOptions[i].id;
+                option.label = selectOptions[i].name_vi;
+                options.push(option);
+            }
         }
+
+
         return options;
     }
 
@@ -60,21 +64,23 @@ class StockMacro extends Component {
                 selectOptions: selectOptions,
             })
         }
-        this.setState({
-            numberOfStock: finishedProfitPlan.data.numberOfStock,
-        })
+        if (finishedProfitPlan.data && finishedProfitPlan.data.numberOfStock) {
+            this.setState({
+                numberOfStock: finishedProfitPlan.data.numberOfStock,
+            })
+        }
 
-        if (finishedProfitPlan.data.postTaxProfitPlan != null) {
+        if (finishedProfitPlan.data && finishedProfitPlan.data.postTaxProfitPlan != null) {
             this.setState({
                 postTaxProfitPlan: CommonUtils.numberWithCommas(Math.round(finishedProfitPlan.data.postTaxProfitPlan / 1000000000, 0)),
             })
         }
-        if (finishedProfitPlan.data.postTaxProfit) {
+        if ( finishedProfitPlan.data && finishedProfitPlan.data.postTaxProfit) {
             this.setState({
                 postTaxProfit: CommonUtils.numberWithCommas(Math.round(finishedProfitPlan.data.postTaxProfit / 1000000000, 0)),
             })
         }
-        if (finishedProfitPlan.data.finishedPercent) {
+        if (finishedProfitPlan.data && finishedProfitPlan.data.finishedPercent) {
             this.setState({
                 finishedPercent: finishedProfitPlan.data.finishedPercent,
             })
@@ -191,7 +197,7 @@ class StockMacro extends Component {
                                             </tr>
                                             <tr>
                                                 <td className="money-type">Đơn vị tỷ đồng</td>
-                                               
+
                                             </tr>
                                         </tbody>
                                     </table>
@@ -199,7 +205,7 @@ class StockMacro extends Component {
                                 <div className="progress-plan-profit">
                                     <div className="progress-container">
                                         <div className="progress progress-bar-vertical">
-                                            <div className="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{ "height":  this.state.finishedPercent}}>
+                                            <div className="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{ "height": this.state.finishedPercent }}>
                                                 <span>{this.state.finishedPercent}%</span>
                                             </div>
                                         </div>

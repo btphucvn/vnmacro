@@ -22,13 +22,17 @@ class Macro extends Component {
                 xAxis: {
                     gridLineWidth: 0,
                     type: 'datetime',
-                    lineColor: 'transparent'
-
+                    lineColor: 'transparent',
+                   // min: 1420045200000
                 },
                 plotOptions: {
                     column: {
                         borderWidth: 0,
-                        shadow: false
+                        shadow: false,
+                        //stacking: 'normal',
+                        padding:5,
+                        groupPadding: 0.3,
+
                     },
                     spline: {
                         shadow: true,
@@ -39,9 +43,13 @@ class Macro extends Component {
 
                 // series: [{
                 //     yAxis: 0,
+                //     type:"column",
+                //     stack:"stack",
                 //     data: [1, 2, 3, 4]
                 // }, {
                 //     yAxis: 0,
+                //     type:"column",
+                //     stack:"stack",
                 //     data: [4, 3, 2, 1]
                 // }, {
                 //     yAxis: 0,
@@ -80,13 +88,18 @@ class Macro extends Component {
             };
             serie.name = data.name;
             serie.color = data.color;
-            serie.zindex = data.zindex;
+            // serie.zindex = data.zindex;
             serie.data = data.data;
             if (!data.type) {
                 data.type = "spline"
             }
+            if(data.stack){
+                serie.stack = data.stack;
+            }
+            if(data.stacking){
+                serie.stacking = data.stacking;
+            }
             serie.type = data.type;
-
             serie.yAxis = 0;
             series.push(serie);
         })
@@ -95,7 +108,7 @@ class Macro extends Component {
         this.setState = ({
             options: options
         })
-        //console.log(options);
+        console.log(options);
     }
 
 

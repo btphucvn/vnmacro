@@ -14,11 +14,26 @@ import { DragDropContext, Droppable, Draggable }
 import './ItemChart.scss'
 
 import Modal from "react-modal";
-import lineChart from "../../assets/images/line-chart.svg";
-import barChart from "../../assets/images/bar-chart.svg";
+import lineChart from "../../assets/images/spline-chart.svg";
+import columnChart from "../../assets/images/column-chart.svg";
+import areaChart from "../../assets/images/area-chart.svg";
+import columnStackChart from "../../assets/images/column-stack-chart.svg";
+
+import columnPercentStackChart from "../../assets/images/column-percent-stack.svg";
 
 const arrColor = ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
     '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'];
+
+const typeCharts = [
+    { type: "spline", title: "Đường", img: lineChart },
+    { type: "column", title: "Cột", img: columnChart },
+    { type: "area", title: "Miền", img: areaChart },
+    { type: "column-stack", title: "Cột chồng", img: columnStackChart },
+    { type: "column-percent-stack", title: "Cột chồng 100%", img: columnPercentStackChart }
+
+
+];
+
 
 const getItems = count =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
@@ -108,7 +123,10 @@ class ItemChart extends Component {
                 if (item.color == null) {
                     item.color = this.getColor(dataChart);
                 }
-                item.zindex = index;
+                if (item.type == null) {
+                    item.type = "spline";
+                }
+                //item.zindex = index;
             })
 
 
@@ -124,23 +142,23 @@ class ItemChart extends Component {
     async onDragEnd(result) {
 
         // dropped outside the list
-        if (!result.destination) {
-            return;
-        }
+        // if (!result.destination) {
+        //     return;
+        // }
 
         const dataChart = await reorder(
             this.state.dataChart,
             result.source.index,
             result.destination.index
         );
-        dataChart.map((item, index) => {
-            item.zindex = index;
-        })
+        // dataChart.map((item, index) => {
+        //     item.zindex = index;
+        // })
         this.props.updateDataChartFromItemChart(dataChart);
-        // this.setState({
-        //     dataChart: dataChart
-        // });
-        //console.log(this.state.items);
+        this.setState({
+            dataChart: dataChart
+        });
+        console.log(this.state.dataChart);
     }
 
     // Normally you would want to split things out into separate components.
@@ -160,8 +178,23 @@ class ItemChart extends Component {
         dataChart.map((item, index) => {
             if (item.id == clickedID) {
                 item.type = type;
+                if (type == "column-stack") {
+                    item.type = "column";
+                    item.stack = "stack";
+                    item.stacking= 'normal';
+                } 
+                else{
+                    item.stack = null;
+                }
+            }
+
+            if (item.stack != "stack") {
+                delete item.stack;
+                delete item.stacking;
+
             }
         })
+        this.toggleModal(null);
         //console.log(dataChart);
         this.props.updateDataChartFromItemChart(dataChart);
     }
@@ -177,6 +210,17 @@ class ItemChart extends Component {
         // this.setState({
         //     dataChart:dataChart
         // })
+    }
+    getTypeChartByType(type, stack) {
+        if (stack) {
+            type = type + "-" + stack;
+        }
+        for (let i = 0; i < typeCharts.length; i++) {
+            if (type == typeCharts[i].type) {
+                return typeCharts[i].img
+            }
+        }
+
     }
     render() {
         //console.log("rerender itemchart.js")
@@ -202,22 +246,25 @@ class ItemChart extends Component {
                         </div>
                     </div>
                     <div className='modal-chart-type'>
-                        <div className='line-chart hover-chart' onClick={() => this.handleOnclickModalItem("spline")}
+                        {
 
-                        >
-                            <div className="image"
-                                style={{ backgroundImage: `url(${lineChart})` }}
-                            ></div>
-                            <span>Đường</span>
-                        </div>
-                        <div className='bar-chart hover-chart' onClick={() => this.handleOnclickModalItem("column")}
+                            typeCharts.map((typeChart, index) => {
+                                return (
+                                    <div className='line-chart hover-chart' onClick={() => this.handleOnclickModalItem(typeChart.type)}>
+                                        <div className="image"
+                                            style={{
+                                                backgroundImage: `url(${typeChart.img})`,
+                                                backgroundSize: 'cover',
+                                                backgroundPosition: 'center center',
+                                                backgroundRepeat: 'no-repeat',
+                                            }}
+                                        ></div>
+                                        <span>{typeChart.title}</span>
+                                    </div>
+                                );
+                            })
+                        }
 
-                        >
-                            <div className="image"
-                                style={{ backgroundImage: `url(${barChart})` }}
-                            ></div>
-                            <span>Biểu đồ cột</span>
-                        </div>
 
 
                     </div>
@@ -231,6 +278,7 @@ class ItemChart extends Component {
                                 <List style={getListStyle(snapshot.isDraggingOver)}>
                                     {this.state.dataChart &&
                                         this.state.dataChart.map((item, index) => (
+
                                             <Draggable key={item.id} draggableId={item.id} index={index}>
                                                 {(provided, snapshot) => (
                                                     <ListItem
@@ -243,10 +291,17 @@ class ItemChart extends Component {
                                                             provided.draggableProps.style
                                                         )}
                                                     >
+
                                                         <div className="content-item">
 
-                                                            <div className='chart-items'>
-                                                                <i onClick={() => this.toggleModal(item.id)} className="fas fa-chart-line chart-icon"></i>
+                                                            <div className='chart-items' onClick={() => this.toggleModal(item.id)}
+                                                                style={{
+                                                                    backgroundImage: `url(${this.getTypeChartByType(item.type, item.stack)})`,
+                                                                    backgroundSize: 'cover',
+                                                                    backgroundRepeat: 'no-repeat',
+                                                                }}
+                                                            >
+                                                                {/* <i onClick={() => this.toggleModal(item.id)} className="fas fa-chart-line chart-icon"></i> */}
 
                                                             </div>
                                                             <div className='input-color'>
