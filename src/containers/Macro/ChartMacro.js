@@ -9,8 +9,19 @@ import Modal from "react-modal";
 
 
 
-class Macro extends Component {
 
+class Macro extends Component {
+    getYAxisRandom = (numberOfAxis) => {
+        let yAxis = [];
+        for (let i = 0; i < numberOfAxis; i++) {
+            let item = {
+                gridLineWidth: 0,
+                title: false,
+            }
+            yAxis.push(item);
+        }
+        return yAxis;
+    }
     constructor(props) {
         super(props);
         // this.chartComponent = React.createRef();
@@ -53,7 +64,17 @@ class Macro extends Component {
                         pointRange: 100,
                     }
                 },
-                // yAxis: [{title:""},{title:""}],
+                yAxis: [{
+                    gridLineWidth: 0,
+                    title: false,
+                },
+                {
+                    gridLineWidth: 0,
+                    title: false,
+                    pointStart:0,
+                    pointEnd: 100,
+                    opposite:true,
+                }],
 
                 // series: [{
                 //     yAxis: 0,
@@ -76,10 +97,10 @@ class Macro extends Component {
                 //     data: [200, 300, 400, 500]
                 // }]
 
-                yAxis: {
-                    gridLineWidth: 0,
-                    title: "",
-                },
+                // yAxis: {
+                //     gridLineWidth: 0,
+                //     title: "",
+                // },
 
                 series: []
             }
@@ -113,9 +134,10 @@ class Macro extends Component {
             };
             serie.name = data.name;
             serie.color = data.color;
-            // serie.zindex = data.zindex;
+            serie.yAxis = 0;
+            serie.zindex = data.zindex;
             serie.data = data.data;
-            
+
             if (!data.type) {
                 data.type = "spline"
             }
@@ -126,7 +148,10 @@ class Macro extends Component {
                 serie.stacking = data.stacking;
             }
             serie.type = data.type;
-            serie.yAxis = 0;
+            if (data.stack == "percent") {
+                serie.yAxis = 1;
+
+            }
             series.push(serie);
         })
         let options = this.state.options;
@@ -140,7 +165,7 @@ class Macro extends Component {
             selectRangeOption: selectRangeOption
         })
         //console.log(selectRangeOption);
-        console.log(options);
+        //console.log(options);
     }
     getOldestTimeStamp(options) {
         const series = options.series;
