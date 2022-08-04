@@ -8,10 +8,12 @@ import Modal from "react-modal";
 
 
 
+
 class Macro extends Component {
 
     constructor(props) {
         super(props);
+        // this.chartComponent = React.createRef();
         this.state = {
             selectRangeOption: [
                 { value: 0, label: 'ALL' },
@@ -32,15 +34,18 @@ class Macro extends Component {
                     gridLineWidth: 0,
                     type: 'datetime',
                     lineColor: 'transparent',
-                    min: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000
+                    min: (Math.floor(Date.now() / 1000) - (365 * 10 * 86400)) * 1000,
+                    //min: 1496250000000
+                    tickInterval: 1000 * 60 * 60 * 24 * 365,
+                    ordinal: false,
+
                 },
                 plotOptions: {
                     column: {
                         borderWidth: 0,
                         shadow: false,
                         //stacking: 'normal',
-                        padding: 5,
-                        groupPadding: 0.3,
+                        groupPadding: 0.2,
 
                     },
                     spline: {
@@ -110,6 +115,7 @@ class Macro extends Component {
             serie.color = data.color;
             // serie.zindex = data.zindex;
             serie.data = data.data;
+            
             if (!data.type) {
                 data.type = "spline"
             }
@@ -134,13 +140,13 @@ class Macro extends Component {
             selectRangeOption: selectRangeOption
         })
         //console.log(selectRangeOption);
-        //console.log(options);
+        console.log(options);
     }
     getOldestTimeStamp(options) {
         const series = options.series;
         let oldestTimestamp = 999999999999999;
         for (let serie of series) {
-            let tmp = serie.data[serie.data.length - 1][0];
+            let tmp = serie.data[0][0];
             if (tmp < oldestTimestamp) {
                 oldestTimestamp = tmp;
             }
@@ -155,6 +161,13 @@ class Macro extends Component {
         this.setState({
             options: options
         })
+
+        // const chart = this.chartComponent.current?.chart;
+
+        // if (chart) chart.redraw();
+        //console.log(options);
+        //console.log(selected.value);
+
     }
     toggleModal = () => {
         this.setState({
@@ -164,14 +177,14 @@ class Macro extends Component {
 
 
     render() {
-        //console.log("rerender")
+
 
         return (
             <Fragment>
                 <div className="chart-macro-header">
                     <div className="select-time-scale">
                         <Select options={this.state.selectRangeOption}
-                            defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 5 * 86400), label: '5y' }}
+                            defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 10 * 86400), label: '10y' }}
                             value={this.state.value}
                             onChange={(value) => this.handleChangeSelectRange(value)}
                         />
@@ -182,6 +195,7 @@ class Macro extends Component {
                 </div>
                 <div className='chart-macro'>
                     <HighchartsReact
+                        // ref={this.chartComponent}
                         containerProps={{ style: { height: "100%" } }}
                         highcharts={Highcharts}
                         options={this.state.options}

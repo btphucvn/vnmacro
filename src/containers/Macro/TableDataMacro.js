@@ -122,8 +122,9 @@ class TableDataMacro extends Component {
             }
         }
     }
-    handleOnClickRow = (id, data) => {
-        this.props.updateDataChartFromTableClick(id, data);
+    handleOnClickRow = (rowClick) => {
+        rowClick.data = rowClick.data.reverse();
+        this.props.updateDataChartFromTableClick(rowClick);
     }
     render() {
         const collapseFlag = false;

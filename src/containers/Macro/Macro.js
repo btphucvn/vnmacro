@@ -10,6 +10,7 @@ import Select from 'react-select'
 import ItemChart from './ItemChart';
 import MacroData from './MacroData';
 import TableDataMacro from './TableDataMacro';
+import NavigatorMacro from './NavigatorMacro';
 const options = [
     { value: 'ALL', label: 'ALL' },
     { value: '3M', label: '3M' },
@@ -76,9 +77,10 @@ class Macro extends Component {
             <Fragment>
                 <div className="macro-header-container">
                     {/* thanh navigator */}
-                    <div className="macro-header-tabs-container">
+                    {/* <div className="macro-header-tabs-container">
                         <Navigator menus={adminMenu} />
-                    </div>
+                    </div> */}
+                    <NavigatorMacro />
                 </div>
                 <div className="macro-container">
                     <div className="chart-macro-container">

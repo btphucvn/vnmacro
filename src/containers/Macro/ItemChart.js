@@ -192,6 +192,7 @@ class ItemChart extends Component {
                 {
                     item.stack = item.id;
                     // item.stacking= 'normal';
+                    
                     delete item.stacking;
                 }
 
