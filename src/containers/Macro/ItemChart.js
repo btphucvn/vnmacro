@@ -142,9 +142,9 @@ class ItemChart extends Component {
     async onDragEnd(result) {
 
         // dropped outside the list
-        // if (!result.destination) {
-        //     return;
-        // }
+        if (!result.destination) {
+            return;
+        }
 
         const dataChart = await reorder(
             this.state.dataChart,
@@ -158,7 +158,7 @@ class ItemChart extends Component {
         this.setState({
             dataChart: dataChart
         });
-        console.log(this.state.dataChart);
+        //console.log(this.state.dataChart);
     }
 
     // Normally you would want to split things out into separate components.
@@ -191,7 +191,7 @@ class ItemChart extends Component {
                 if(type=="column")
                 {
                     item.stack = item.id;
-                    // item.stacking= 'normal';
+                     item.stacking= 'normal';
                     
                     delete item.stacking;
                 }

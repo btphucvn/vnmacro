@@ -24,7 +24,7 @@ class Macro extends Component {
     }
     constructor(props) {
         super(props);
-        // this.chartComponent = React.createRef();
+        this.chartComponent = React.createRef();
         this.state = {
             selectRangeOption: [
                 { value: 0, label: 'ALL' },
@@ -71,9 +71,7 @@ class Macro extends Component {
                 {
                     gridLineWidth: 0,
                     title: false,
-                    pointStart:0,
-                    pointEnd: 100,
-                    opposite:true,
+                    height:"100%",
                 }],
 
                 // series: [{
@@ -112,7 +110,6 @@ class Macro extends Component {
     }
     handleClick = event => {
         event.preventDefault();
-        console.log("aaaa")
         this.setState({ isOpen: true }, () => {
             document.addEventListener("click", this.closeMenu);
         });
@@ -156,6 +153,12 @@ class Macro extends Component {
         })
         let options = this.state.options;
         options.series = series;
+
+        options.series.map((serie) => {
+            if (serie.data[0] !== undefined && serie.data[1] !== undefined && serie.data[0] > serie.data[1]) {
+                serie.data = serie.data.reverse();
+            }
+        })
 
         let selectRangeOption = this.state.selectRangeOption;
         selectRangeOption[0].value = this.getOldestTimeStamp(options);
@@ -220,7 +223,7 @@ class Macro extends Component {
                 </div>
                 <div className='chart-macro'>
                     <HighchartsReact
-                        // ref={this.chartComponent}
+                        ref={this.chartComponent}
                         containerProps={{ style: { height: "100%" } }}
                         highcharts={Highcharts}
                         options={this.state.options}
@@ -241,11 +244,11 @@ class Macro extends Component {
                             />
                         </div>
                     </div>
-                    <HighchartsReact
+                    {/* <HighchartsReact
                         containerProps={{ style: { height: "80%" } }}
                         highcharts={Highcharts}
                         options={this.state.options}
-                    />
+                    /> */}
                 </Modal>
             </Fragment>
         );
