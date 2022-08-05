@@ -20,6 +20,8 @@ import areaChart from "../../assets/images/area-chart.svg";
 import columnStackChart from "../../assets/images/column-stack-chart.svg";
 
 import columnPercentStackChart from "../../assets/images/column-percent-stack.svg";
+import { map } from 'lodash';
+import { zIndex } from 'material-ui/styles';
 
 const arrColor = ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
     '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'];
@@ -126,7 +128,11 @@ class ItemChart extends Component {
                 if (item.type == null) {
                     item.type = "spline";
                 }
-                //item.zindex = index;
+                if(item.zIndex===undefined)
+                {
+                    item.zIndex = index;
+                }
+                
             })
 
 
@@ -146,11 +152,22 @@ class ItemChart extends Component {
             return;
         }
 
-        const dataChart = await reorder(
+        let tmpDataChart = await reorder(
             this.state.dataChart,
             result.source.index,
             result.destination.index
         );
+        let dataChart = this.state.dataChart;
+        tmpDataChart.map((tmp, tmpIndex) => {
+            tmpDataChart[zIndex]=tmpIndex;
+        })
+        tmpDataChart.map((tmp, tmpIndex) => {
+            dataChart.map((data,dataIndex) => {
+                if (data.id === tmp.id) {
+                    dataChart[dataIndex].zIndex = tmpIndex;
+                }
+            })
+        })
         // dataChart.map((item, index) => {
         //     item.zindex = index;
         // })
@@ -181,18 +198,17 @@ class ItemChart extends Component {
                 if (type == "column-stack") {
                     item.type = "column";
                     item.stack = "stack";
-                    item.stacking= 'normal';
+                    item.stacking = 'normal';
                 }
                 if (type == "column-percent-stack") {
                     item.type = "column";
                     item.stack = "percent";
-                    item.stacking= 'percent';
+                    item.stacking = 'percent';
                 }
-                if(type=="column")
-                {
+                if (type == "column") {
                     item.stack = item.id;
-                     item.stacking= 'normal';
-                    
+                    item.stacking = 'normal';
+
                     delete item.stacking;
                 }
 
@@ -221,16 +237,19 @@ class ItemChart extends Component {
         // })
     }
     getTypeChartByType(type, stacking) {
-        if (stacking=="normal") {
+
+        if (stacking == "normal") {
             type = "column-stack";
         }
-        if (stacking=="percent") {
+
+        if (stacking == "percent") {
             type = "column-percent-stack";
         }
-        if(stacking==undefined && type.includes("column"))
-        {
-            type="column";
+
+        if (stacking == undefined && type.includes("column")) {
+            type = "column";
         }
+
         for (let i = 0; i < typeCharts.length; i++) {
             if (type == typeCharts[i].type) {
                 return typeCharts[i].img
@@ -241,7 +260,13 @@ class ItemChart extends Component {
     render() {
         //console.log("rerender itemchart.js")
 
-        //console.log(this.state.items)
+        let dataChart =this.state.dataChart;
+        if (this.state.dataChart) {
+             dataChart = dataChart.sort((a, b) => (a.zIndex >= b.zIndex ? 1 : -1))
+        }
+        //let dataChart = this.state.dataChart.sort((a, b) => a.zIndex > b.zIndex)
+
+
         return (
             <Fragment>
 
@@ -292,8 +317,8 @@ class ItemChart extends Component {
                         {(provided, snapshot) => (
                             <RootRef rootRef={provided.innerRef}>
                                 <List style={getListStyle(snapshot.isDraggingOver)}>
-                                    {this.state.dataChart &&
-                                        this.state.dataChart.map((item, index) => (
+                                    {dataChart &&
+                                        dataChart.map((item, index) => (
 
                                             <Draggable key={item.id} draggableId={item.id} index={index}>
                                                 {(provided, snapshot) => (

@@ -39,6 +39,8 @@ class Macro extends Component {
     componentDidMount() {
     }
 
+
+
     updateDataChartFromItemChart=(dataFromItemChart)=>{
         this.setState({
             dataChart:dataFromItemChart

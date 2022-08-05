@@ -3,9 +3,9 @@
 .item-chart-macro {
     .chart-items {
 
-        display: flex;
+        display   : flex;
         min-height: 30px;
-        min-width: 30px;
+        min-width : 30px;
         //border: 1px solid whitesmoke;
         align-self: center;
     }
@@ -155,6 +155,10 @@ li.MuiListItem-container {
                 width             : 70%;
                 height            : 70%;
                 //background-image: url('../../assets/images/line-chart.svg');
+            }
+
+            span {
+                text-align: -webkit-center;
             }
         }
 

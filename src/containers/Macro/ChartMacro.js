@@ -24,7 +24,7 @@ class Macro extends Component {
     }
     constructor(props) {
         super(props);
-        this.chartComponent = React.createRef();
+        this.chartRef = React.createRef();
         this.state = {
             selectRangeOption: [
                 { value: 0, label: 'ALL' },
@@ -45,7 +45,7 @@ class Macro extends Component {
                     gridLineWidth: 0,
                     type: 'datetime',
                     lineColor: 'transparent',
-                    min: (Math.floor(Date.now() / 1000) - (365 * 10 * 86400)) * 1000,
+                    min: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000,
                     //min: 1496250000000
                     tickInterval: 1000 * 60 * 60 * 24 * 365,
                     ordinal: false,
@@ -71,37 +71,19 @@ class Macro extends Component {
                 {
                     gridLineWidth: 0,
                     title: false,
-                    height:"100%",
+                    height: "100%",
+                    opposite:true,
                 }],
-
-                // series: [{
-                //     yAxis: 0,
-                //     type:"column",
-                //     stack:"stack",
-                //     data: [1, 2, 3, 4]
-                // }, {
-                //     yAxis: 0,
-                //     type:"column",
-                //     stack:"stack",
-                //     data: [4, 3, 2, 1]
-                // }, {
-                //     yAxis: 0,
-                //     data: [6, 6, 6, 6]
-                // }, {
-                //     yAxis: 1,
-                //     data: [245, 523, 674, 734]
-                // }, {
-                //     yAxis: 1,
-                //     data: [200, 300, 400, 500]
-                // }]
-
-                // yAxis: {
-                //     gridLineWidth: 0,
-                //     title: "",
-                // },
 
                 series: []
             }
+        }
+    }
+
+    afterChartCreated = (chart) => {
+        // Highcharts creates a separate chart instance during export
+        if (!chart.options.chart.forExport) {
+            this.internalChart = chart;
         }
     }
 
@@ -120,7 +102,10 @@ class Macro extends Component {
         });
     }
     componentWillReceiveProps(props) {
-        const dataChart = props.dataChart;
+
+        //console.log(this.internalChart.get("dang-ky-kinh-doanh_all_von-dang-ky-nghin-ty"))
+
+        let dataChart = props.dataChart;
         //console.log(dataChart)
 
         let series = [];
@@ -132,7 +117,9 @@ class Macro extends Component {
             serie.name = data.name;
             serie.color = data.color;
             serie.yAxis = 0;
-            serie.zindex = data.zindex;
+            serie.id = data.id;
+            serie.zIndex = data.zIndex;
+
             serie.data = data.data;
 
             if (!data.type) {
@@ -147,8 +134,8 @@ class Macro extends Component {
             serie.type = data.type;
             if (data.stack == "percent") {
                 serie.yAxis = 1;
-
             }
+
             series.push(serie);
         })
         let options = this.state.options;
@@ -168,7 +155,7 @@ class Macro extends Component {
             selectRangeOption: selectRangeOption
         })
         //console.log(selectRangeOption);
-        //console.log(options);
+        console.log(options);
     }
     getOldestTimeStamp(options) {
         const series = options.series;
@@ -206,13 +193,12 @@ class Macro extends Component {
 
     render() {
 
-
         return (
             <Fragment>
                 <div className="chart-macro-header">
                     <div className="select-time-scale">
                         <Select options={this.state.selectRangeOption}
-                            defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 10 * 86400), label: '10y' }}
+                            defaultValue={{ value: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000, label: '5y' }}
                             value={this.state.value}
                             onChange={(value) => this.handleChangeSelectRange(value)}
                         />
@@ -223,10 +209,12 @@ class Macro extends Component {
                 </div>
                 <div className='chart-macro'>
                     <HighchartsReact
-                        ref={this.chartComponent}
+                        ref={this.chartRef}
                         containerProps={{ style: { height: "100%" } }}
                         highcharts={Highcharts}
                         options={this.state.options}
+                        callback={this.afterChartCreated}
+
                     />
                 </div>
                 <Modal
@@ -238,17 +226,17 @@ class Macro extends Component {
                     <div className="chart-macro-header-modal">
                         <div className="select-time-scale">
                             <Select options={this.state.selectRangeOption}
-                                defaultValue={{ value: Math.floor(Date.now() / 1000) - (365 * 5 * 86400), label: '5y' }}
+                                defaultValue={{ value: (Math.floor(Date.now() / 1000) - (365 * 5 * 86400)) * 1000, label: '5y' }}
                                 value={this.state.value}
                                 onChange={(value) => this.handleChangeSelectRange(value)}
                             />
                         </div>
                     </div>
-                    {/* <HighchartsReact
+                    <HighchartsReact
                         containerProps={{ style: { height: "80%" } }}
                         highcharts={Highcharts}
                         options={this.state.options}
-                    /> */}
+                    />
                 </Modal>
             </Fragment>
         );
