@@ -36,6 +36,7 @@ class Macro extends Component {
 
     render() {
         const macros = this.state.macros;
+        //console.log(macros);
         return (
             <div class="macro-header-tabs-container">
                 <ul class="navigator-menu list-unstyled">
@@ -44,16 +45,20 @@ class Macro extends Component {
                             return (
                                 <li class="menu-group">
                                     <div class={"menu-group-name" + (this.state.macro_key_id == macro.key_id ? " active " : "")} >
-                                        {macro.names.name_vi}
+                                        {macro.names.name_vi+" "}
+                                        <i class="fas fa-caret-down"></i>
                                     </div>
                                     <ul class="menu-list list-unstyled">
                                         {
                                             macro.macro_types.map((macro_type) => {
+
                                                 return (
                                                     <li class={"menu" + (this.state.macro_type_key_id == macro_type.key_id ? " active " : "")}>
                                                         <Link class="menu-link"
                                                             to={"/vi-mo/" + macro.key_id + "/" + macro_type.key_id}
-                                                            onClick={() => this.handleOnClickNav(macro.key_id, macro_type.key_id)}>{macro_type.title}</Link>
+                                                            onClick={() => this.handleOnClickNav(macro.key_id, macro_type.key_id)}>
+                                                            {macro_type.names ? macro_type.names.name_vi : ""}
+                                                        </Link>
 
                                                     </li>
                                                 );

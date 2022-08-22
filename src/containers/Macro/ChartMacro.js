@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { drop } from 'lodash';
-import Select from 'react-select'
+import Select from 'react-select';
 import Modal from "react-modal";
+import { yAxisArr } from './YAxis.js';
 
 
 
@@ -64,16 +65,7 @@ class Macro extends Component {
                         pointRange: 100,
                     }
                 },
-                yAxis: [{
-                    gridLineWidth: 0,
-                    title: false,
-                },
-                {
-                    gridLineWidth: 0,
-                    title: false,
-                    height: "100%",
-                    opposite:true,
-                }],
+                yAxis: yAxisArr,
 
                 series: []
             }
@@ -106,7 +98,6 @@ class Macro extends Component {
         //console.log(this.internalChart.get("dang-ky-kinh-doanh_all_von-dang-ky-nghin-ty"))
 
         let dataChart = props.dataChart;
-        //console.log(dataChart)
 
         let series = [];
         dataChart.map((data, index) => {
@@ -119,7 +110,7 @@ class Macro extends Component {
             serie.yAxis = 0;
             serie.id = data.id;
             serie.zIndex = data.zIndex;
-
+            serie.yAxis = data.yaxis;
             serie.data = data.data;
 
             if (!data.type) {
@@ -155,7 +146,7 @@ class Macro extends Component {
             selectRangeOption: selectRangeOption
         })
         //console.log(selectRangeOption);
-        console.log(options);
+        //console.log(options);
     }
     getOldestTimeStamp(options) {
         const series = options.series;

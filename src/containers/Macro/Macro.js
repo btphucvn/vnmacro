@@ -105,7 +105,7 @@ class Macro extends Component {
                         {/* <Route path="/vi-mo/:key_id_macro/:key_id" component={(TableDataMacro)} /> */}
                         <Route
                             path="/vi-mo/:key_id_macro/:key_id"
-                            render={(props) => <TableDataMacro {...props} authed={true} updateDataChartFromTableClick={this.updateDataChartFromTableClick} />}
+                            render={(props) => <TableDataMacro {...props} dataChart={JSON.stringify(this.state.dataChart)} authed={true} updateDataChartFromTableClick={this.updateDataChartFromTableClick} />}
                         />
                     </div>
                 </div>

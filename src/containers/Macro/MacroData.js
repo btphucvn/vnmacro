@@ -99,7 +99,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.names.name_vi}</Link>
                                             </li>
                                         );
                                     }
@@ -107,7 +107,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.title}</Link>
+                                                <Link to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.names.name_vi}</Link>
                                             </li>
                                         );
                                     }

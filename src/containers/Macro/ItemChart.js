@@ -30,8 +30,8 @@ const typeCharts = [
     { type: "spline", title: "Đường", img: lineChart },
     { type: "column", title: "Cột", img: columnChart },
     { type: "area", title: "Miền", img: areaChart },
-    { type: "column-stack", title: "Cột chồng", img: columnStackChart },
-    { type: "column-percent-stack", title: "Cột chồng 100%", img: columnPercentStackChart }
+    { type: "column", stacking: "normal", title: "Cột chồng", img: columnStackChart },
+    { type: "column", stacking: "percent", title: "Cột chồng 100%", img: columnPercentStackChart }
 
 
 ];
@@ -128,11 +128,10 @@ class ItemChart extends Component {
                 if (item.type == null) {
                     item.type = "spline";
                 }
-                if(item.zIndex===undefined)
-                {
+                if (item.zIndex === undefined) {
                     item.zIndex = index;
                 }
-                
+
             })
 
 
@@ -159,10 +158,10 @@ class ItemChart extends Component {
         );
         let dataChart = this.state.dataChart;
         tmpDataChart.map((tmp, tmpIndex) => {
-            tmpDataChart[zIndex]=tmpIndex;
+            tmpDataChart[zIndex] = tmpIndex;
         })
         tmpDataChart.map((tmp, tmpIndex) => {
-            dataChart.map((data,dataIndex) => {
+            dataChart.map((data, dataIndex) => {
                 if (data.id === tmp.id) {
                     dataChart[dataIndex].zIndex = tmpIndex;
                 }
@@ -191,26 +190,43 @@ class ItemChart extends Component {
 
     }
     handleOnclickModalItem = (type) => {
+        console.log(type);
         let dataChart = this.state.dataChart;
+
         dataChart.map((item, index) => {
             if (item.id == clickedID) {
-                item.type = type;
-                if (type == "column-stack") {
-                    item.type = "column";
-                    item.stack = "stack";
-                    item.stacking = 'normal';
-                }
-                if (type == "column-percent-stack") {
-                    item.type = "column";
-                    item.stack = "percent";
-                    item.stacking = 'percent';
-                }
-                if (type == "column") {
-                    item.stack = item.id;
-                    item.stacking = 'normal';
-
+                item.type = type.type;
+                if (type.stacking) {
+                    item.stacking = type.stacking;
+                    if(type.stacking=="percent")
+                    {
+                        item.stack = "percent";
+                    }
+                    if(type.stacking=="normal"){
+                        item.stack = "normal"
+                    }
+                } else { 
                     delete item.stacking;
+                    delete item.stack;
                 }
+                
+
+                // if (type == "column-stack") {
+                //     item.type = "column";
+                //     item.stack = "stack";
+                //     item.stacking = 'normal';
+                // }
+                // if (type == "column-percent-stack") {
+                //     item.type = "column";
+                //     item.stack = "percent";
+                //     item.stacking = 'percent';
+                // }
+                // if (type == "column") {
+                //     item.stack = item.id;
+                //     item.stacking = 'normal';
+
+                //     delete item.stacking;
+                // }
 
             }
 
@@ -232,26 +248,13 @@ class ItemChart extends Component {
             }
         })
         this.props.updateDataChartFromItemChart(dataChart);
-        // this.setState({
-        //     dataChart:dataChart
-        // })
+
     }
     getTypeChartByType(type, stacking) {
 
-        if (stacking == "normal") {
-            type = "column-stack";
-        }
-
-        if (stacking == "percent") {
-            type = "column-percent-stack";
-        }
-
-        if (stacking == undefined && type.includes("column")) {
-            type = "column";
-        }
 
         for (let i = 0; i < typeCharts.length; i++) {
-            if (type == typeCharts[i].type) {
+            if (type == typeCharts[i].type && stacking == typeCharts[i].stacking) {
                 return typeCharts[i].img
             }
         }
@@ -260,9 +263,9 @@ class ItemChart extends Component {
     render() {
         //console.log("rerender itemchart.js")
 
-        let dataChart =this.state.dataChart;
+        let dataChart = this.state.dataChart;
         if (this.state.dataChart) {
-             dataChart = dataChart.sort((a, b) => (a.zIndex >= b.zIndex ? 1 : -1))
+            dataChart = dataChart.sort((a, b) => (a.zIndex >= b.zIndex ? 1 : -1))
         }
         //let dataChart = this.state.dataChart.sort((a, b) => a.zIndex > b.zIndex)
 
@@ -291,7 +294,7 @@ class ItemChart extends Component {
 
                             typeCharts.map((typeChart, index) => {
                                 return (
-                                    <div className='line-chart hover-chart' onClick={() => this.handleOnclickModalItem(typeChart.type)}>
+                                    <div className='line-chart hover-chart' onClick={() => this.handleOnclickModalItem(typeChart)}>
                                         <div className="image"
                                             style={{
                                                 backgroundImage: `url(${typeChart.img})`,

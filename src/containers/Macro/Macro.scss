@@ -1,5 +1,9 @@
 @import "../../styles/common.scss";
 
+#root {
+    min-width: 950px;
+}
+
 .macro-header-container {
     z-index         : 99;
     display         : flex;
@@ -137,14 +141,14 @@
 }
 
 .chart-macro-modal {
-    top: 40%;
-    left: 50%;
-    outline: none;
-    transform: translate(10%, 10%);
-    width: 80%;
-    height: 80%;
+    top       : 40%;
+    left      : 50%;
+    outline   : none;
+    transform : translate(10%, 10%);
+    width     : 80%;
+    height    : 80%;
     background: white;
-    padding: 0.5rem;
+    padding   : 0.5rem;
 
     .chart-macro-header-modal {
         .select-time-scale {

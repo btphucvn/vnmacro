@@ -28,6 +28,23 @@
 
   .td-column-title {
     min-width: 250px;
+
+    .td-column-title-container {
+      display: flex;
+
+      .toggle-container {
+
+          z-index : 99999999;
+          width   : 15px;
+      }
+    }
+
+    // svg {
+    //   position: absolute;
+
+    //   z-index : 99999999;
+    //   width   : 15px;
+    // }
   }
 
   .td-column-value {
@@ -36,7 +53,7 @@
   }
 
   .header-table {
-    text-align: right;
+    text-align : right;
     white-space: nowrap;
   }
 
@@ -178,33 +195,40 @@
 .radio-container {
   display   : flex;
   column-gap: 10px;
-  position: sticky;
-  left: 0px;
+  position  : sticky;
+  left      : 0px;
 
   span {
     padding-left: 2px;
   }
 }
-.header-title-table{
+
+.header-title-table {
   min-width: 250px;
-  
+
 }
-tbody > tr > td:first-child {
+
+tbody>tr>td:first-child {
   background: #fff;
-  position: sticky;
-  left: 0px;
-  width: min-content;
-  padding: 2px 5px 5px 5px;
+  position  : sticky;
+  left      : 0px;
+  width     : min-content;
+  padding   : 2px 5px 5px 5px;
+
   &:hover {
     background-color: $colorhover;
     cursor          : pointer;
   }
 }
 
-thead > tr > th:first-child {
+thead>tr>th:first-child {
   background: $colorsub;
-  position: sticky;
-  left: 0px;
-  width: min-content;
-  padding: 2px 5px 5px 5px;
+  position  : sticky;
+  left      : 0px;
+  width     : min-content;
+  padding   : 2px 5px 5px 5px;
+}
+
+.high-light-row{
+    background: #cbf0ed !important;
 }

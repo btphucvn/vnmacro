@@ -5,7 +5,7 @@ import "./StockMacro.scss";
 import ChartRatio from '../../components/Chart/ChartRatio';
 import { getAllSelect, getMarketRatio, getFinishedProfitPlan } from '../../services/StockMacroService'
 import CommonUtils from '../../utils/CommonUtils';
-
+import { Redirect } from 'react-router';
 
 
 
@@ -128,6 +128,9 @@ class StockMacro extends Component {
         }
     }
     render() {
+        return(
+            <Redirect to="/vi-mo/san-luong/gdp-viet-nam-theo-nam" />
+        )
         return (
             <Fragment>
                 <div className="stock-macro-container">
