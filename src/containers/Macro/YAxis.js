@@ -127,5 +127,18 @@ export const yAxisArr = [
         gridLineWidth: 0,
         title: false,
     }
+    ,
+    {
+        //23
+        gridLineWidth: 0,
+        title: false,
+    }
+    ,
+    {
+        //24
+        gridLineWidth: 0,
+        title: false,
+    }
+
 
 ];

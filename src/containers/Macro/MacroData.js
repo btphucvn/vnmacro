@@ -59,12 +59,14 @@ class MacroData extends Component {
         //console.log(data);
 
         const dataNav = data.data;
+
         if (data.errCode == 0 && data.data.length > 0) {
             this.setState({
                 dataNav: dataNav,
                 keySelected: dataNav[0].key_id,
             })
         }
+
         if (dataNav && dataNav.length > 0) {
             dataNav.map((item, index) => {
                 if (item.key_id == this.props.match.params.key_id) {
@@ -76,6 +78,7 @@ class MacroData extends Component {
                 }
             })
         }
+        
     }
     handleOnClickNav = async (item, index) => {
         //console.log(item);
@@ -99,7 +102,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.names.name_vi}</Link>
+                                                <Link className='active' to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.name}</Link>
                                             </li>
                                         );
                                     }
@@ -107,7 +110,7 @@ class MacroData extends Component {
 
                                         return (
                                             <li>
-                                                <Link to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.names.name_vi}</Link>
+                                                <Link to={"/vi-mo/" + this.props.match.params.key_id_macro + "/" + item.key_id} onClick={() => this.handleOnClickNav(item, index)}>{item.name}</Link>
                                             </li>
                                         );
                                     }

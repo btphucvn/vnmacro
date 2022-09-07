@@ -8,8 +8,7 @@ import { getValueTypeByKeyIDMactoType } from '../../services/MacroTypeService'
 import { getTableByKeyIDMactoType } from '../../services/TableService'
 import { CommonUtils } from '../../utils';
 import Loader from '../../components/Loader/Loader';
-import { getMacroData } from '../../services/MacroDataService';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { getMacroData } from '../../services/MacroDataService'
 
 
 class TableDataMacro extends Component {
@@ -25,9 +24,7 @@ class TableDataMacro extends Component {
         }
 
     }
-    capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+
     checkExitsValueType(value_types, valueType) {
         for (let item of value_types) {
             if (item == valueType) {
@@ -135,7 +132,7 @@ class TableDataMacro extends Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     handleRadioChange = async (event) => {
-        // const dataTable = await getMacroData(this.props.match.params.key_id, event.target.value);
+       // const dataTable = await getMacroData(this.props.match.params.key_id, event.target.value);
         const dataTable = await getTableByKeyIDMactoType(this.props.match.params.key_id, event.target.value);
 
         this.setState({
@@ -164,11 +161,11 @@ class TableDataMacro extends Component {
     }
     handleOnClickRow = (rowClick) => {
         //rowClick.data = rowClick.data.reverse();
-        console.log(rowClick)
+        //console.log("rowClick")
         this.props.updateDataChartFromTableClick(rowClick);
     }
     checkCollapse = () => {
-        const collapseKey = ["xuat-khau-quoc-gia-mat-hang", "nhap-khau-quoc-gia-mat-hang","chi-so-iip-viet-nam"]
+        const collapseKey = ["xuat-khau-quoc-gia-mat-hang"]
         let result = false;
         collapseKey.map((item) => {
             if (item == this.state.key_id) {
@@ -179,7 +176,7 @@ class TableDataMacro extends Component {
     }
     checkRowSelected = (idChild) => {
         const dataChart = this.state.dataChart;
-        if (!dataChart) {
+        if(!dataChart){
             return false;
         }
         for (let i = 0; i < dataChart.length; i++) {
@@ -189,13 +186,8 @@ class TableDataMacro extends Component {
         }
         return false;
     }
-    getYearFromStringHeader = (str) => {
-        const arrStr = str.split('-');
-        return arrStr[1];
-    }
     render() {
         const collapseFlag = this.checkCollapse();
-        //const collapseFlag = false;
         let classHidden = "";
         const value_types = this.state.value_types;
         const dataTable = this.state.dataTable;
@@ -208,26 +200,21 @@ class TableDataMacro extends Component {
                 </Fragment>
             );
         }
-
         if (collapseFlag && dataTable) {
             classHidden = "hidden";
             dataTable.map((table, dataTableIndex) => {
-                let childRows = [];
-                for (let i = table.rows.length - 1; i > 0; i--) {
-
-                    if (table.rows[i].level == 3) {
-                        childRows.push(table.rows[i].id_string)
-                    }
-                    if (table.rows[i].level == 2) {
-                        table.rows[i].childRows = childRows;
-                        childRows = [];
-                    }
-
-                }
+                table.rows.map((rowLevel1) => {
+                    rowLevel1.rows.map((rowLevel2) => {
+                        let childRow = [];
+                        rowLevel2.rows.map((rowLevel3) => {
+                            childRow.push(rowLevel3.idChild);
+                        })
+                        rowLevel2.childRow = childRow;
+                    })
+                })
             });
-            console.log(dataTable);
-        }
 
+        }
         return (
             <Fragment>
                 <div className="radio-container">
@@ -247,186 +234,8 @@ class TableDataMacro extends Component {
 
                     <input type="text" id="txtSearch" onChange={this.handleSearch} placeholder="Tìm chỉ số" title="Type in a name"></input>
                 </div>
+
                 {dataTable ?
-                    dataTable.map((dataTable, dataTableIndex) => {
-                        let headerTable = dataTable.header;
-                        let tableName = "";
-                        tableName = dataTable.name;
-                        if (dataTable.table_type != "") {
-                            tableName = tableName + " " + "(" + dataTable.table_type + ")";
-                        }
-                        if (dataTable.unit != "") {
-                            tableName = tableName + " " + "(" + dataTable.unit + ")";
-                        }
-                        return (
-                            <table className="cell" id={dataTable.key_id}>
-                                <thead>
-                                    <tr>
-                                        <th className='header-title-table'>{tableName.toUpperCase()}</th>
-                                        {
-
-                                            headerTable.map((headerTable, headerTableIndex) => {
-                                                if (dataTable.date_type === "Year") {
-                                                    return <th className='header-table'>{this.getYearFromStringHeader(headerTable)}</th>;
-                                                }
-                                                else {
-                                                    return <th className='header-table'>{headerTable}</th>;
-                                                }
-                                            })
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        dataTable.rows.map((row, indexRow) => {
-                                            let rowClick = {};
-                                            rowClick.id = row.id_string;
-                                            rowClick.name = dataTable.name.toUpperCase() + " - " + this.capitalizeFirstLetter(row.name) + " (" + row.unit + ")";
-
-                                            rowClick.data = row.data;
-                                            rowClick.yaxis = row.yaxis;
-                                            if (row.level == 1) {
-                                                return (
-                                                    <tr
-                                                        onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={(this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
-                                                    >
-                                                        <td className={"td-column-title bold-general"}>
-                                                            {
-                                                                dataTable.unit == ""
-                                                                    ?
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
-                                                                    </span>
-                                                                    :
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name)}
-                                                                    </span>
-                                                            }
-
-                                                        </td>
-                                                        {
-                                                            row.data.map((data, indexData) => {
-                                                                return (
-                                                                    <td className="td-column-value bold-general">
-                                                                        {
-                                                                            row.data[indexData][1]!=null?
-                                                                            (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                            CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                            : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                            :"-"
-                                                                        }
-                                                                    </td>
-                                                                );
-
-                                                            })
-                                                        }
-                                                    </tr>
-                                                )
-                                            }
-                                            if (row.level == 2 || row.level == 0) {
-                                                return (
-                                                    <tr id={row.id_string}
-                                                        onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={(this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
-                                                    >
-                                                        <td className={"td-column-title"}>
-                                                            {collapseFlag && row.childRows && row.childRows.length > 0 ?
-                                                                <Fragment>
-                                                                    <button type="button"
-                                                                        id={"btn_" + row.id_string}
-                                                                        aria-expanded="false"
-                                                                        onClick={(event, eIDs) => this.toggle(event, row.childRows)}
-                                                                    >
-                                                                        <svg
-                                                                            xmlns="\http://www.w3.org/2000/svg&quot;" viewBox="0 0 80 80" focusable="false"><path d="M70.3 13.8L40 66.3 9.7 13.8z"></path></svg>
-                                                                    </button>
-
-                                                                </Fragment>
-                                                                : ""
-
-
-                                                            }
-                                                            {/* <span class="col-name-padding">{this.capitalizeFirstLetter(row.name)}</span> */}
-                                                            {
-                                                                dataTable.unit == ""
-                                                                    ?
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
-                                                                    </span>
-                                                                    :
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name)}
-                                                                    </span>
-                                                            }
-                                                        </td>
-                                                        {
-                                                            row.data.map((data, indexData) => {
-                                                                return (
-                                                                    <td className="td-column-value">
-                                                                        {
-                                                                             row.data[indexData][1]!=null?
-                                                                             (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                             CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                             : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                             :"-"
-                                                                        }
-                                                                    </td>
-                                                                );
-
-                                                            })
-                                                        }
-                                                    </tr>
-                                                )
-                                            }
-                                            if (row.level == 3) {
-                                                return (
-                                                    <tr id={row.id_string}
-                                                        onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={classHidden + " " + (this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
-                                                    >
-                                                        <td className="td-column-title padding-child-row">
-                                                            {
-                                                                dataTable.unit == ""
-                                                                    ?
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
-                                                                    </span>
-                                                                    :
-                                                                    <span>
-                                                                        {this.capitalizeFirstLetter(row.name)}
-                                                                    </span>
-                                                            }
-                                                        </td>
-                                                        {
-                                                            row.data.map((data, indexData) => {
-                                                                return (
-                                                                    <td className="td-column-value">
-                                                                        {
-                                                                            row.data[indexData][1]!=null?
-                                                                            (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                            CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                            : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                            :"-"
-                                                                        }
-                                                                    </td>
-                                                                );
-
-                                                            })
-                                                        }
-                                                    </tr>
-                                                )
-                                            }
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        );
-                    })
-                    : ""
-                }
-
-                {/* {dataTable ?
                     dataTable.map((dataTable, dataTableIndex) => {
                         let headerTable = dataTable.header;
                         return (
@@ -463,6 +272,7 @@ class TableDataMacro extends Component {
 
                                                                 <td className="td-column-title">
                                                                     <div>
+
                                                                         {rowLevel1.names.name_vi}
                                                                     </div>
                                                                 </td>
@@ -571,7 +381,7 @@ class TableDataMacro extends Component {
                         );
 
                     }) : ""
-                } */}
+                }
 
 
 

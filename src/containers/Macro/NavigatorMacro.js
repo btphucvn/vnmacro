@@ -45,7 +45,7 @@ class Macro extends Component {
                             return (
                                 <li class="menu-group">
                                     <div class={"menu-group-name" + (this.state.macro_key_id == macro.key_id ? " active " : "")} >
-                                        {macro.names.name_vi+" "}
+                                        {macro.name+" "}
                                         <i class="fas fa-caret-down"></i>
                                     </div>
                                     <ul class="menu-list list-unstyled">
@@ -57,7 +57,7 @@ class Macro extends Component {
                                                         <Link class="menu-link"
                                                             to={"/vi-mo/" + macro.key_id + "/" + macro_type.key_id}
                                                             onClick={() => this.handleOnClickNav(macro.key_id, macro_type.key_id)}>
-                                                            {macro_type.names ? macro_type.names.name_vi : ""}
+                                                            {macro_type.name ? macro_type.name : ""}
                                                         </Link>
 
                                                     </li>
