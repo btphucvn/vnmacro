@@ -168,7 +168,7 @@ class TableDataMacro extends Component {
         this.props.updateDataChartFromTableClick(rowClick);
     }
     checkCollapse = () => {
-        const collapseKey = ["xuat-khau-quoc-gia-mat-hang", "nhap-khau-quoc-gia-mat-hang","chi-so-iip-viet-nam"]
+        const collapseKey = ["xuat-khau-quoc-gia-mat-hang", "nhap-khau-quoc-gia-mat-hang", "chi-so-iip-viet-nam", "fdi-dang-ky-theo-quoc-gia", "fdi-dang-ky-theo-tinh-thanh"]
         let result = false;
         collapseKey.map((item) => {
             if (item == this.state.key_id) {
@@ -213,10 +213,10 @@ class TableDataMacro extends Component {
             classHidden = "hidden";
             dataTable.map((table, dataTableIndex) => {
                 let childRows = [];
-                for (let i = table.rows.length - 1; i > 0; i--) {
+                for (let i = table.rows.length - 1; i >= 0; i--) {
 
                     if (table.rows[i].level == 3) {
-                        childRows.push(table.rows[i].id_string)
+                        childRows.push(table.rows[i].key_id)
                     }
                     if (table.rows[i].level == 2) {
                         table.rows[i].childRows = childRows;
@@ -225,7 +225,7 @@ class TableDataMacro extends Component {
 
                 }
             });
-            console.log(dataTable);
+            // console.log(dataTable);
         }
 
         return (
@@ -280,7 +280,7 @@ class TableDataMacro extends Component {
                                     {
                                         dataTable.rows.map((row, indexRow) => {
                                             let rowClick = {};
-                                            rowClick.id = row.id_string;
+                                            rowClick.id = row.key_id;
                                             rowClick.name = dataTable.name.toUpperCase() + " - " + this.capitalizeFirstLetter(row.name) + " (" + row.unit + ")";
 
                                             rowClick.data = row.data;
@@ -289,14 +289,14 @@ class TableDataMacro extends Component {
                                                 return (
                                                     <tr
                                                         onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={(this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
+                                                        className={(this.checkRowSelected(row.key_id) ? "high-light-row" : "")}
                                                     >
                                                         <td className={"td-column-title bold-general"}>
                                                             {
                                                                 dataTable.unit == ""
                                                                     ?
                                                                     <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
+                                                                        {this.capitalizeFirstLetter(row.name) + " (" + row.unit + ")"}
                                                                     </span>
                                                                     :
                                                                     <span>
@@ -310,11 +310,11 @@ class TableDataMacro extends Component {
                                                                 return (
                                                                     <td className="td-column-value bold-general">
                                                                         {
-                                                                            row.data[indexData][1]!=null?
-                                                                            (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                            CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                            : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                            :"-"
+                                                                            row.data[indexData][1] != null ?
+                                                                                (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                    CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
+                                                                                    : parseFloat(row.data[indexData][1]).toFixed(2))
+                                                                                : "-"
                                                                         }
                                                                     </td>
                                                                 );
@@ -326,15 +326,15 @@ class TableDataMacro extends Component {
                                             }
                                             if (row.level == 2 || row.level == 0) {
                                                 return (
-                                                    <tr id={row.id_string}
+                                                    <tr id={row.key_id}
                                                         onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={(this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
+                                                        className={(this.checkRowSelected(row.key_id) ? "high-light-row" : "")}
                                                     >
                                                         <td className={"td-column-title"}>
                                                             {collapseFlag && row.childRows && row.childRows.length > 0 ?
                                                                 <Fragment>
                                                                     <button type="button"
-                                                                        id={"btn_" + row.id_string}
+                                                                        id={"btn_" + row.key_id}
                                                                         aria-expanded="false"
                                                                         onClick={(event, eIDs) => this.toggle(event, row.childRows)}
                                                                     >
@@ -352,7 +352,7 @@ class TableDataMacro extends Component {
                                                                 dataTable.unit == ""
                                                                     ?
                                                                     <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
+                                                                        {this.capitalizeFirstLetter(row.name) + " (" + row.unit + ")"}
                                                                     </span>
                                                                     :
                                                                     <span>
@@ -365,11 +365,11 @@ class TableDataMacro extends Component {
                                                                 return (
                                                                     <td className="td-column-value">
                                                                         {
-                                                                             row.data[indexData][1]!=null?
-                                                                             (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                             CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                             : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                             :"-"
+                                                                            row.data[indexData][1] != null ?
+                                                                                (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                    CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
+                                                                                    : parseFloat(row.data[indexData][1]).toFixed(2))
+                                                                                : "-"
                                                                         }
                                                                     </td>
                                                                 );
@@ -381,16 +381,16 @@ class TableDataMacro extends Component {
                                             }
                                             if (row.level == 3) {
                                                 return (
-                                                    <tr id={row.id_string}
+                                                    <tr id={row.key_id}
                                                         onClick={() => this.handleOnClickRow(rowClick)}
-                                                        className={classHidden + " " + (this.checkRowSelected(row.id_string) ? "high-light-row" : "")}
+                                                        className={(this.checkRowSelected(row.key_id) ? "shown high-light-row" : classHidden)}
                                                     >
                                                         <td className="td-column-title padding-child-row">
                                                             {
                                                                 dataTable.unit == ""
                                                                     ?
                                                                     <span>
-                                                                        {this.capitalizeFirstLetter(row.name) +" (" +row.unit+")"}
+                                                                        {this.capitalizeFirstLetter(row.name) + " (" + row.unit + ")"}
                                                                     </span>
                                                                     :
                                                                     <span>
@@ -403,11 +403,11 @@ class TableDataMacro extends Component {
                                                                 return (
                                                                     <td className="td-column-value">
                                                                         {
-                                                                            row.data[indexData][1]!=null?
-                                                                            (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
-                                                                            CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
-                                                                            : parseFloat(row.data[indexData][1]).toFixed(2))
-                                                                            :"-"
+                                                                            row.data[indexData][1] != null ?
+                                                                                (parseFloat(row.data[indexData][1]).toFixed(2) >= 1000 ?
+                                                                                    CommonUtils.numberWithCommas(parseFloat(row.data[indexData][1]).toFixed(0))
+                                                                                    : parseFloat(row.data[indexData][1]).toFixed(2))
+                                                                                : "-"
                                                                         }
                                                                     </td>
                                                                 );
